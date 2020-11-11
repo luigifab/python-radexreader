@@ -1,0 +1,9 @@
+#!/usr/bin/make -f
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+%:
+	dh $@ --with python3
+
+override_dh_update_autotools_config:
+	sed -i 's/python3-radexreader /python3-radexreader-deb /g' src/cmd.py

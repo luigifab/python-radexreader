@@ -1,0 +1,2 @@
+src/radexreader/      usr/lib/python3/dist-packages
+debian/*.metainfo.xml usr/share/metainfo
