@@ -32,11 +32,14 @@ except:
 	import radexreader
 	msg = 'Information   radexreader ' + radexreader.__version__ + ' with python ' + python_version() + ' and pyusb ' + usb.__version__
 
-if len(sys.argv) > 1:
+port = ""
+if len(sys.argv) > 2 :
+		port = sys.argv[2]
 
+if len(sys.argv) > 1:
 	if sys.argv[1] == 'erase':
 		print(msg)
-		reader = radexreader.RadexReader()
+		reader = radexreader.RadexReader(port)
 		reader.print_info()
 		reader.erase()
 		print('done!')
@@ -44,7 +47,7 @@ if len(sys.argv) > 1:
 
 	if sys.argv[1] == 'tail':
 		print(msg)
-		reader = radexreader.RadexReader()
+		reader = radexreader.RadexReader(port)
 		reader.print_info()
 		prev = None
 		while True:
@@ -65,7 +68,7 @@ if len(sys.argv) > 1:
 
 	if sys.argv[1] == 'readlast':
 		print(msg)
-		reader = radexreader.RadexReader()
+		reader = radexreader.RadexReader(port)
 		reader.print_info()
 		measures = reader.read(True)
 		for timestamp, measure in measures.items():
@@ -83,8 +86,8 @@ if len(sys.argv) > 1:
 
 	if sys.argv[1] == 'readall':
 		print(msg)
-		reader = radexreader.RadexReader()
-		reader.print_info()
+		reader = radexreader.RadexReader(port)
+		#reader.print_info()
 		measures = reader.read(False)
 		for timestamp, measure in measures.items():
 			print("%s  %s µSv/h  ±%s%% (%s ≤ %s ≤ %s)" % (
@@ -101,13 +104,13 @@ if len(sys.argv) > 1:
 
 	if sys.argv[1] == 'jsonlast':
 		import json
-		print(json.dumps(radexreader.RadexReader().read(True)))
+		print(json.dumps(radexreader.RadexReader(port).read(True)))
 		exit(0)
 
 	if sys.argv[1] == 'jsonall':
 		import json
-		print(json.dumps(radexreader.RadexReader().read(False)))
+		print(json.dumps(radexreader.RadexReader(port).read(False)))
 		exit(0)
 
-print('Usage: radexreader erase|tail|readlast|readall|jsonlast|jsonall')
+print('Usage: radexreader erase|tail|readlast|readall|jsonlast|jsonall [COMPORT]')
 exit(-1)
