@@ -4,7 +4,7 @@
 
 
 cd "$(dirname "$0")"
-version="1.0.0"
+version="1.1.0"
 rm -rf builder/
 
 
@@ -31,8 +31,7 @@ sed -i 's/Usage: radexreader /Usage: cmd.py /g'             builder/radexreader-
 
 
 
-# create package
-# https://packaging.python.org/tutorials/packaging-projects/
+# create package (https://packaging.python.org/tutorials/packaging-projects/)
 cd builder/radexreader-${version}/
 python3 -m pip install --user --upgrade setuptools wheel --no-warn-script-location
 python3 setup.py sdist bdist_wheel

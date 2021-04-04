@@ -4,7 +4,7 @@
 
 
 cd "$(dirname "$0")"
-version="1.0.0"
+version="1.1.0"
 
 
 rm -rf builder/
@@ -81,7 +81,7 @@ for serie in unstable hirsute groovy focal bionic xenial trusty precise; do
 			echo 9 > debian/compat
 		fi
 		sed -i 's/unstable/'${serie}'/g' debian/changelog
-		sed -i 's/-5) /-5+'${serie}') /' debian/changelog
+		sed -i 's/-1) /-1+'${serie}') /' debian/changelog
 		dpkg-buildpackage -us -uc -ui -d -S
 	fi
 	echo "==========================="

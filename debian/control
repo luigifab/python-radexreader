@@ -11,7 +11,7 @@ Vcs-Git: https://github.com/luigifab/python-radexreader.git
 
 Package: python3-radexreader
 Architecture: all
-Depends: ${misc:Depends}, ${python3:Depends}, python3-usb
+Depends: ${misc:Depends}, ${python3:Depends}, python3-usb, python3-serial
 Description: Reader for the RADEX RD1212 Geiger counter (Python module)
  The RadexReader is an user-space driver for the RADEX RD1212. It
  allow to read and clear stored data via USB.
@@ -20,7 +20,6 @@ Description: Reader for the RADEX RD1212 Geiger counter (Python module)
  to unplug the device after installation.
 
 Package: radexreader
-Section: devel
 Architecture: all
 Depends: ${misc:Depends}, ${python3:Depends}, python3-radexreader
 Description: Reader for the RADEX RD1212 Geiger counter (CLI)

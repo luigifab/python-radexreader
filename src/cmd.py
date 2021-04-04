@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 # -*- coding: utf8 -*-
 # Created L/19/10/2020
-# Updated D/08/11/2020
+# Updated V/26/03/2021
 #
-# Copyright 2020 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+# Copyright 2020-2021 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
 # https://github.com/luigifab/python-radexreader
 # https://www.luigifab.fr/python/radexreader
 #
@@ -22,24 +22,32 @@ from platform import python_version
 import time
 import sys
 import usb
+import serial
 
 try:
 	import radexreader
-	msg = 'Information   python3-radexreader ' + radexreader.__version__ + ' with python ' + python_version() + ' and pyusb ' + usb.__version__
+	msg = 'Information   python3-radexreader ' + radexreader.__version__ + ' with python ' + python_version() + ' + pyusb ' + usb.__version__ + ' + pyserial ' + serial.__version__
 except:
 	import os
 	sys.path.append(os.path.abspath(__file__).replace('cmd.py', ''))
 	import radexreader
-	msg = 'Information   radexreader ' + radexreader.__version__ + ' with python ' + python_version() + ' and pyusb ' + usb.__version__
+	msg = 'Information   radexreader ' + radexreader.__version__ + ' with python ' + python_version() + ' + pyusb ' + usb.__version__ + ' + pyserial ' + serial.__version__
 
 if len(sys.argv) > 1:
+
+	if sys.argv[1] == 'serial':
+		print(msg)
+		reader = radexreader.RadexReader()
+		reader.print_info()
+		reader.print_serial_number()
+		exit(0)
 
 	if sys.argv[1] == 'erase':
 		print(msg)
 		reader = radexreader.RadexReader()
 		reader.print_info()
 		reader.erase()
-		print('done!')
+		print('done')
 		exit(0)
 
 	if sys.argv[1] == 'tail':
@@ -51,7 +59,7 @@ if len(sys.argv) > 1:
 			measures = reader.read(True)
 			for timestamp, measure in measures.items():
 				if timestamp != prev:
-					print("%s  %s µSv/h  ±%s%% (%s ≤ %s ≤ %s)" % (
+					print('%s  %s µSv/h  ±%s%% (%s ≤ %s ≤ %s)' % (
 						str(datetime.utcfromtimestamp(timestamp)),
 						str('{:.2f}'.format(measure['val'])).rjust(6, ' '),
 						str(int(measure['pct'])),
@@ -63,13 +71,26 @@ if len(sys.argv) > 1:
 			time.sleep(10)
 		exit(0)
 
+	if sys.argv[1] == 'tailjson':
+		import json
+		reader = radexreader.RadexReader()
+		prev   = None
+		while True:
+			measures = reader.read(True)
+			for timestamp, measure in measures.items():
+				if timestamp != prev:
+					print(json.dumps(measure))
+				prev = timestamp
+			time.sleep(10)
+		exit(0)
+
 	if sys.argv[1] == 'readlast':
 		print(msg)
 		reader = radexreader.RadexReader()
 		reader.print_info()
 		measures = reader.read(True)
 		for timestamp, measure in measures.items():
-			print("%s  %s µSv/h  ±%s%% (%s ≤ %s ≤ %s)" % (
+			print('%s  %s µSv/h  ±%s%% (%s ≤ %s ≤ %s)' % (
 				str(datetime.utcfromtimestamp(timestamp)),
 				str('{:.2f}'.format(measure['val'])).rjust(6, ' '),
 				str(int(measure['pct'])),
@@ -78,7 +99,12 @@ if len(sys.argv) > 1:
 				str('{:.2f}'.format(measure['max']))
 			))
 		if not measures:
-			print("no data stored")
+			print('no data stored')
+		exit(0)
+
+	if sys.argv[1] == 'jsonlast':
+		import json
+		print(json.dumps(radexreader.RadexReader().read(True)))
 		exit(0)
 
 	if sys.argv[1] == 'readall':
@@ -87,7 +113,7 @@ if len(sys.argv) > 1:
 		reader.print_info()
 		measures = reader.read(False)
 		for timestamp, measure in measures.items():
-			print("%s  %s µSv/h  ±%s%% (%s ≤ %s ≤ %s)" % (
+			print('%s  %s µSv/h  ±%s%% (%s ≤ %s ≤ %s)' % (
 				str(datetime.utcfromtimestamp(timestamp)),
 				str('{:.2f}'.format(measure['val'])).rjust(6, ' '),
 				str(int(measure['pct'])),
@@ -96,12 +122,7 @@ if len(sys.argv) > 1:
 				str('{:.2f}'.format(measure['max']))
 			))
 		if not measures:
-			print("no data stored")
-		exit(0)
-
-	if sys.argv[1] == 'jsonlast':
-		import json
-		print(json.dumps(radexreader.RadexReader().read(True)))
+			print('no data stored')
 		exit(0)
 
 	if sys.argv[1] == 'jsonall':
@@ -109,5 +130,5 @@ if len(sys.argv) > 1:
 		print(json.dumps(radexreader.RadexReader().read(False)))
 		exit(0)
 
-print('Usage: radexreader erase|tail|readlast|readall|jsonlast|jsonall')
+print('Usage: radexreader erase|tail|tailjson|readlast|jsonlast|readall|jsonall')
 exit(-1)
