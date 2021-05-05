@@ -1,5 +1,5 @@
-python-radexreader (1.1.0-1) unstable; urgency=low
+python-radexreader (1.2.0-1) unstable; urgency=low
 
   * Initial debian package release (Closes: #973447)
 
- -- Fabrice Creuzot <code@luigifab.fr>  Sun, 04 Apr 2021 20:00:00 +0000
+ -- Fabrice Creuzot <code@luigifab.fr>  Wed, 05 May 2021 20:00:00 +0000

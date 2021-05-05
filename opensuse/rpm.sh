@@ -1,6 +1,6 @@
 #!/bin/bash
-# fedora: sudo dnf install rpmdevtools rpm-sign python3-devel hunspell-fr
-# fedora: configure: error: C compiler cannot create executables? remove and reinstall glibc-devel gcc
+# opensuse: sudo zypper install rpmdevtools rpmlint rpm-build python3-devel aspell-fr
+
 
 cd "$(dirname "$0")"
 version="1.2.0"
@@ -20,7 +20,7 @@ else
 	rm -rf /tmp/${temp}/*/builder/ /tmp/${temp}/radexreader/__pycache__/
 
 	mv /tmp/${temp} builder/
-	cp /usr/share/licenses/linux-firmware/GPL-2 builder/${temp}/LICENSE
+	cp /usr/share/licenses/kernel-firmware/GPL-2 builder/${temp}/LICENSE
 
 	cd builder/
 	tar czf ${temp}.tar.gz ${temp}

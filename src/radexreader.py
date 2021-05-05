@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf8 -*-
 # Created L/19/10/2020
-# Updated V/26/03/2021
+# Updated D/02/05/2021
 #
 # Copyright 2020-2021 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
 # https://github.com/luigifab/python-radexreader
@@ -19,28 +19,23 @@
 
 from datetime import datetime
 from platform import python_version
-import time
 import sys
+import time
 import usb
 import serial
 
 try:
 	import radexreader
-	msg = 'Information   python3-radexreader ' + radexreader.__version__ + ' with python ' + python_version() + ' + pyusb ' + usb.__version__ + ' + pyserial ' + serial.__version__
+	msg = 'Information   python3-radexreader ' + radexreader.__version__
+	msg += ' with python ' + python_version() + ' + pyusb ' + usb.__version__ + ' + pyserial ' + serial.__version__
 except:
 	import os
-	sys.path.append(os.path.abspath(__file__).replace('cmd.py', ''))
+	sys.path.append(os.path.abspath(__file__).replace('radexreader.py', ''))
 	import radexreader
-	msg = 'Information   radexreader ' + radexreader.__version__ + ' with python ' + python_version() + ' + pyusb ' + usb.__version__ + ' + pyserial ' + serial.__version__
+	msg = 'Information   radexreader ' + radexreader.__version__
+	msg += ' with python ' + python_version() + ' + pyusb ' + usb.__version__ + ' + pyserial ' + serial.__version__
 
 if len(sys.argv) > 1:
-
-	if sys.argv[1] == 'serial':
-		print(msg)
-		reader = radexreader.RadexReader()
-		reader.print_info()
-		reader.print_serial_number()
-		exit(0)
 
 	if sys.argv[1] == 'erase':
 		print(msg)
@@ -67,6 +62,12 @@ if len(sys.argv) > 1:
 						str('{:.2f}'.format(measure['val'])),
 						str('{:.2f}'.format(measure['max']))
 					))
+					if reader.com == 'ONEv1':
+						print('                     %s µSv accumulated / %s CPM  [±%s%%]' % (
+							str('{:.2f}'.format(measure['acc'])).rjust(6, ' '),
+							str('{:.0f}'.format(measure['cpm'])).rjust(6, ' '),
+							str(int(measure['pct']))
+						))
 				prev = timestamp
 			time.sleep(10)
 		exit(0)
@@ -98,6 +99,12 @@ if len(sys.argv) > 1:
 				str('{:.2f}'.format(measure['val'])),
 				str('{:.2f}'.format(measure['max']))
 			))
+			if reader.com == 'ONEv1':
+				print('                     %s µSv accumulated / %s CPM  [±%s%%]' % (
+					str('{:.2f}'.format(measure['acc'])).rjust(6, ' '),
+					str('{:.0f}'.format(measure['cpm'])).rjust(6, ' '),
+					str(int(measure['pct']))
+				))
 		if not measures:
 			print('no data stored')
 		exit(0)
@@ -121,6 +128,12 @@ if len(sys.argv) > 1:
 				str('{:.2f}'.format(measure['val'])),
 				str('{:.2f}'.format(measure['max']))
 			))
+			if reader.com == 'ONEv1':
+				print('                     %s µSv accumulated / %s CPM  [±%s%%]' % (
+					str('{:.2f}'.format(measure['acc'])).rjust(6, ' '),
+					str('{:.0f}'.format(measure['cpm'])).rjust(6, ' '),
+					str(int(measure['pct']))
+				))
 		if not measures:
 			print('no data stored')
 		exit(0)

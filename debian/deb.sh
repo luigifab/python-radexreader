@@ -2,9 +2,8 @@
 # debian: sudo apt install dpkg-dev devscripts dh-make dh-python dh-exec
 
 
-
 cd "$(dirname "$0")"
-version="1.1.0"
+version="1.2.0"
 
 
 rm -rf builder/
@@ -32,7 +31,7 @@ fi
 
 
 # create packages for debian and ubuntu
-for serie in unstable hirsute groovy focal bionic xenial trusty precise; do
+for serie in unstable impish hirsute groovy focal bionic xenial trusty precise; do
 
 	if [ $serie = "unstable" ]; then
 		# for ubuntu
@@ -100,7 +99,7 @@ for serie in unstable hirsute groovy focal bionic xenial trusty precise; do
 	cd ..
 done
 
-ls -dltrh $PWD/builder/*.deb $PWD/builder/*.changes
+ls -dltrh builder/*.deb builder/*.changes
 echo "==========================="
 
 # cleanup

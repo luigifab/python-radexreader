@@ -3,14 +3,19 @@
 	<id>python3-radexreader</id>
 	<name>python3-radexreader</name>
 	<metadata_license>GPL-2+</metadata_license>
-	<summary>Reader for the RADEX RD1212 Geiger counter</summary>
+	<summary>Reader for the RADEX RD1212 and ONE Geiger counters</summary>
 	<description>
 		<p>
-			The RadexReader is an user-space driver for the RADEX RD1212.
+			The RadexReader is an user-space driver for the RADEX RD1212 and the RADEX ONE Geiger counters.
 			It allow to read and clear stored data via USB.
 		</p>
 	</description>
 	<provides>
+		<!-- RD1212v2 -->
 		<modalias>usb:v03EBp5603d*</modalias>
+		<!-- RD1212v1 -->
+		<modalias>usb:v10C4pEA60d*</modalias>
+		<!-- ONEv1 -->
+		<modalias>usb:vABBApA011d*</modalias>
 	</provides>
 </component>

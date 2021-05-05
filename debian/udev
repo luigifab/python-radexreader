@@ -1,1 +1,3 @@
 SUBSYSTEM=="usb", ATTR{idVendor}=="03eb", ATTR{idProduct}=="5603", TAG+="uaccess"
+SUBSYSTEM=="usb", ATTR{idVendor}=="10c4", ATTR{idProduct}=="ea60", TAG+="uaccess"
+SUBSYSTEM=="usb", ATTR{idVendor}=="abba", ATTR{idProduct}=="a011", TAG+="uaccess"
