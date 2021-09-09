@@ -20,9 +20,9 @@ It require *libusb*, *pyusb* and *pyserial*.
 
 * Debian and Ubuntu: `sudo apt install python3-radexreader radexreader` (coming soon or via [PPA](https://launchpad.net/~luigifab/+archive/ubuntu/packages))
 
-* Fedora: `sudo dnf install python3-radexreader` (coming soon)
+* Fedora: `sudo dnf install python3-radexreader`
 
-* OpenSuse: `sudo zypper install python3-radexreader`
+* openSUSE: `sudo zypper install python3-radexreader`
 
 * Linux: `sudo python3 -m pip install radexreader` (+libusb)
 
@@ -30,8 +30,7 @@ It require *libusb*, *pyusb* and *pyserial*.
 
 * Windows: `python -m pip install radexreader` (+[libusb](https://libusb.info/), put libusb-1.0.dll in system32)
 
-* Docker Alpine: `sudo docker run --rm --user root -it --privileged -v /dev:/dev python:3.x-alpine /bin/sh`\
-then: `apk update ; apk add libusb ; python3 -m pip install radexreader`
+* Docker Alpine: `sudo docker run --rm --user root -it --privileged -v /dev:/dev python:3.x-alpine /bin/sh` then: `apk update ; apk add libusb ; python3 -m pip install radexreader`
 
 ## PPA
 
@@ -62,15 +61,15 @@ pub   rsa4096 2020-10-31 [SC]
 
 ## Copyright
 
-- Current version: 1.2.0 (05/05/2021)
-- Compatibility: Python 3.3 / 3.4 / 3.5 / 3.6 / 3.7 / 3.8 / 3.9
+- Current version: 1.2.1 (09/09/2021)
+- Compatibility: Python 3.3 / 3.4 / 3.5 / 3.6 / 3.7 / 3.8 / 3.9 / 3.10
 - Links: [luigifab.fr](https://www.luigifab.fr/python/radexreader) - [github.com](https://github.com/luigifab/python-radexreader) - [pypi.org](https://pypi.org/project/radexreader/)\
-[debian python-radexreader.deb](https://tracker.debian.org/pkg/python3-radexreader)
+[Debian python-radexreader.deb](https://tracker.debian.org/pkg/python3-radexreader)
   *([ITP](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=973447),
    [RFS](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=974217))*\
-[fedora python-radexreader.rpm](https://src.fedoraproject.org/rpms/python3-radexreader)\
-[opensuse python-radexreader.rpm](https://software.opensuse.org/package/python-radexreader)\
-[ubuntu PPA](https://launchpad.net/~luigifab/+archive/ubuntu/packages)
+[Fedora python-radexreader.rpm](https://src.fedoraproject.org/rpms/python3-radexreader)\
+[openSUSE python-radexreader.rpm](https://software.opensuse.org/package/python-radexreader)\
+[Ubuntu PPA](https://launchpad.net/~luigifab/+archive/ubuntu/packages)
 
 This program is provided under the terms of the **GNU GPLv2+** license.\
 If you like, take some of your time to improve some translations, go to https://bit.ly/2HyCCEc.

@@ -1,9 +1,9 @@
 #!/bin/bash
-# fedora: sudo dnf install rpmdevtools rpm-sign python3-devel hunspell-fr
-# fedora: configure: error: C compiler cannot create executables? remove and reinstall glibc-devel gcc
+# Fedora: sudo dnf install rpmdevtools rpm-sign python3-devel hunspell-fr
+# Fedora: configure: error: C compiler cannot create executables? remove and reinstall glibc-devel gcc
 
 cd "$(dirname "$0")"
-version="1.2.0"
+version="1.2.1"
 
 
 rm -rf builder/ ~/rpmbuild/
@@ -14,19 +14,19 @@ if [ true ]; then
 	chmod 644 python-radexreader.spec
 	spectool -g -R python-radexreader.spec
 else
-	temp=python-radexreader-${version}
-	mkdir /tmp/${temp}
-	cp -r ../* /tmp/${temp}/
-	rm -rf /tmp/${temp}/*/builder/ /tmp/${temp}/radexreader/__pycache__/
+	temp=python-radexreader-$version
+	mkdir /tmp/$temp
+	cp -r ../* /tmp/$temp/
+	rm -rf /tmp/$temp/*/builder/ /tmp/$temp/radexreader/__pycache__/
 
-	mv /tmp/${temp} builder/
-	cp /usr/share/licenses/linux-firmware/GPL-2 builder/${temp}/LICENSE
+	mv /tmp/$temp builder/
+	cp /usr/share/licenses/linux-firmware/GPL-2 builder/$temp/LICENSE
 
 	cd builder/
-	tar czf ${temp}.tar.gz ${temp}
+	tar czf $temp.tar.gz $temp
 	cd ..
 
-	cp builder/${temp}.tar.gz ~/rpmbuild/SOURCES/python-radexreader-${version}.tar.gz
+	cp builder/$temp.tar.gz ~/rpmbuild/SOURCES/python-radexreader-$version.tar.gz
 	chmod 644 python-radexreader.spec
 fi
 

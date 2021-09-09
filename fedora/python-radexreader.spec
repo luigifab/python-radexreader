@@ -18,7 +18,7 @@ Pour éviter un Access denied (insufficient permissions), n'oubliez pas
 de débrancher l'appareil après l'installation.}
 
 Name:          python-radexreader
-Version:       1.2.0
+Version:       1.2.1
 Release:       1%{?dist}
 Summary:       %{common_summary_en}
 Summary(fr):   %{common_summary_fr}
@@ -39,6 +39,7 @@ Summary:       %{common_summary_en}
 Summary(fr):   %{common_summary_fr}
 
 BuildRequires: python3-devel
+BuildRequires: python3-setuptools
 Requires:      python3
 Requires:      %{py3_dist pyserial}
 Requires:      %{py3_dist pyusb}
@@ -67,12 +68,15 @@ install -p -m 755 ../src/radexreader.py %{buildroot}%{_bindir}/radexreader
 %files -n python3-radexreader
 %license LICENSE
 %doc README.md
-%{_bindir}/radexreader
+%ghost %{python3_sitelib}/radexreader*egg-info/
 %{python3_sitelib}/radexreader/
-%{python3_sitelib}/radexreader*egg-info/
+%{_bindir}/radexreader
 /lib/udev/rules.d/60-python3-radexreader.rules
 
 
 %changelog
+* Thu Sep 09 2021 Fabrice Creuzot <code@luigifab.fr> - 1.2.1-1
+- New upstream version
+
 * Wed May 05 2021 Fabrice Creuzot <code@luigifab.fr> - 1.2.0-1
-- Initial fedora package release (Closes: rhbz#1896742)
+- Initial Fedora package release (Closes: rhbz#1896742)

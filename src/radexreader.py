@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf8 -*-
 # Created L/19/10/2020
-# Updated D/02/05/2021
+# Updated J/06/05/2021
 #
 # Copyright 2020-2021 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
 # https://github.com/luigifab/python-radexreader
@@ -23,6 +23,10 @@ import sys
 import time
 import usb
 import serial
+
+# https://stackoverflow.com/a/62804772/2980105
+# prevent auto import for "import radexreader"when filename is "radexreader.py"
+sys.path = sys.path[1:]
 
 try:
 	import radexreader

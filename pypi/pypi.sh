@@ -1,9 +1,9 @@
 #!/bin/bash
-# debian: sudo apt install python3-pip python3-setuptools
-# fedora: sudo dnf install python3-devel
+# Debian: sudo apt install python3-pip python3-setuptools
+# Fedora: sudo dnf install python3-devel
 
 cd "$(dirname "$0")"
-version="1.2.0"
+version="1.2.1"
 rm -rf builder/
 
 

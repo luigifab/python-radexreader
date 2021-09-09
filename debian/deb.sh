@@ -3,7 +3,7 @@
 
 
 cd "$(dirname "$0")"
-version="1.2.0"
+version="1.2.1"
 
 
 rm -rf builder/
@@ -12,41 +12,41 @@ mkdir builder
 # copy to a tmp directory
 if [ true ]; then
 	cd builder
-	wget https://github.com/luigifab/python-radexreader/archive/v${version}/python-radexreader-${version}.tar.gz
-	tar xzf python-radexreader-${version}.tar.gz
+	wget https://github.com/luigifab/python-radexreader/archive/v$version/python-radexreader-$version.tar.gz
+	tar xzf python-radexreader-$version.tar.gz
 	cd ..
 else
-	temp=python-radexreader-${version}
-	mkdir /tmp/${temp}
-	cp -r ../* /tmp/${temp}/
-	rm -rf /tmp/${temp}/*/builder/ /tmp/${temp}/radexreader/__pycache__/
+	temp=python-radexreader-$version
+	mkdir /tmp/$temp
+	cp -r ../* /tmp/$temp/
+	rm -rf /tmp/$temp/*/builder/ /tmp/$temp/radexreader/__pycache__/
 
-	mv /tmp/${temp} builder/
-	cp /usr/share/common-licenses/GPL-2 builder/${temp}/LICENSE
+	mv /tmp/$temp builder/
+	cp /usr/share/common-licenses/GPL-2 builder/$temp/LICENSE
 
 	cd builder/
-	tar czf ${temp}.tar.gz ${temp}
+	tar czf $temp.tar.gz $temp
 	cd ..
 fi
 
 
 # create packages for debian and ubuntu
-for serie in unstable impish hirsute groovy focal bionic xenial trusty precise; do
+for serie in unstable impish hirsute focal bionic xenial trusty; do
 
 	if [ $serie = "unstable" ]; then
 		# for ubuntu
-		cp -a builder/python-radexreader-${version}/ builder/python-radexreader-${version}+src/
+		cp -a builder/python-radexreader-$version/ builder/python-radexreader-$version+src/
 		# debian only
-		cd builder/python-radexreader-${version}/
+		cd builder/python-radexreader-$version/
 	else
 		# ubuntu only
-		cp -a builder/python-radexreader-${version}+src/ builder/python-radexreader-${version}+${serie}/
-		cd builder/python-radexreader-${version}+${serie}/
+		cp -a builder/python-radexreader-$version+src/ builder/python-radexreader-$version+$serie/
+		cd builder/python-radexreader-$version+$serie/
 	fi
 
-	dh_make -a -s -y -f ../python-radexreader-${version}.tar.gz -p python-radexreader
+	dh_make -a -s -y -f ../python-radexreader-$version.tar.gz -p python-radexreader
 
-	rm -f debian/*ex debian/*EX debian/README* debian/*doc*
+	rm -f debian/*ex debian/*EX debian/README* debian/*doc* debian/deb.sh
 	mkdir debian/upstream
 	mv debian/metadata     debian/upstream/metadata
 	mv debian/udev         debian/python3-radexreader.udev
@@ -56,7 +56,7 @@ for serie in unstable impish hirsute groovy focal bionic xenial trusty precise; 
 	if [ $serie = "unstable" ]; then
 		dpkg-buildpackage -us -uc
 	else
-		# debhelper: unstable:13 hirsute:13 groovy:13 focal:12 bionic:9 xenial:9 trusty:9 precise:9
+		# debhelper: unstable:13 hirsute:13 focal:12 bionic:9 xenial:9 trusty:9
 		if [ $serie = "focal" ]; then
 			sed -i 's/debhelper-compat (= 13)/debhelper-compat (= 12)/g' debian/control
 		fi
@@ -73,14 +73,8 @@ for serie in unstable impish hirsute groovy focal bionic xenial trusty precise; 
 			sed -i ':a;N;$!ba;s/Rules-Requires-Root: no\n//g' debian/control
 			echo 9 > debian/compat
 		fi
-		if [ $serie = "precise" ]; then
-			sed -i 's/debhelper-compat (= 13)/debhelper (>= 9)/g' debian/control
-			sed -i ':a;N;$!ba;s/Rules-Requires-Root: no\n//g' debian/control
-			sed -i 's/, dh-python//g' debian/control
-			echo 9 > debian/compat
-		fi
-		sed -i 's/unstable/'${serie}'/g' debian/changelog
-		sed -i 's/-1) /-1+'${serie}') /' debian/changelog
+		sed -i 's/unstable/'$serie'/g' debian/changelog
+		sed -i 's/-1) /-1+'$serie') /' debian/changelog
 		dpkg-buildpackage -us -uc -ui -d -S
 	fi
 	echo "==========================="
@@ -88,12 +82,12 @@ for serie in unstable impish hirsute groovy focal bionic xenial trusty precise; 
 
 	if [ $serie = "unstable" ]; then
 		# debian only
-		debsign python-radexreader_${version}-*.changes
+		debsign python-radexreader_$version-*.changes
 		echo "==========================="
-		lintian -EviIL +pedantic python-radexreader_${version}-*.deb
+		lintian -EviIL +pedantic python-radexreader_$version-*.deb
 	else
 		# ubuntu only
-		debsign python-radexreader_${version}*+${serie}*source.changes
+		debsign python-radexreader_$version*+$serie*source.changes
 	fi
 	echo "==========================="
 	cd ..
