@@ -185,6 +185,9 @@ class RadexReader():
 		for key in keys:
 			self.hid_set_report((0x12, 0x12, 0x01, 0x02, key, 0, 0, 0, 0, 0, 0, 0, 0x3c, 0x84))
 			hexa = self.hid_get_report()
+			if hexa == b'':
+				# quite often, somehow, nothing at all is returned.  quietly ignore that state
+				continue
 			if hexa[0] != 0:
 				# timestamp = 01/01/2016 00:00:44 = 1451606444
 				# timestamp = 01/01/2016 00:00:44 = 172 + 193 (×256) + 133 (×256×256) + 86 (×256×256×256)
