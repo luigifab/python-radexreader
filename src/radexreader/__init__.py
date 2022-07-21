@@ -63,8 +63,8 @@ class RadexReader():
 		if self.usb is not None:
 			self.com = 'RD1212v1'
 			# search usb serial device (https://stackoverflow.com/a/25112066/2980105)
-            # This grep will catch other CP2102 serial devices
-            # It is also possible that more than one CP2102 device is plugged in, and this simply takes the first one found
+			# This grep will catch other CP2102 serial devices
+			# It is also possible that more than one CP2102 device is plugged in, and this simply takes the first one found
 			devices  = serial.tools.list_ports.grep('CP2102')
 			for device in devices:
 				self.serial = serial.Serial(port = device.device, baudrate = 115200, timeout = 0.5)
