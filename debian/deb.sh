@@ -1,9 +1,9 @@
 #!/bin/bash
-# debian: sudo apt install dpkg-dev devscripts dh-make dh-python dh-exec
+# Debian: sudo apt install dpkg-dev devscripts dh-make dh-python dh-exec
 
 
 cd "$(dirname "$0")"
-version="1.2.1"
+version="1.2.2"
 
 
 rm -rf builder/
@@ -30,33 +30,34 @@ else
 fi
 
 
-# create packages for debian and ubuntu
-for serie in unstable impish hirsute focal bionic xenial trusty; do
+# create packages for Debian and Ubuntu
+for serie in experimental mantic lunar kinetic jammy focal bionic xenial trusty; do
 
-	if [ $serie = "unstable" ]; then
-		# for ubuntu
+	if [ $serie = "experimental" ]; then
+		# for Ubuntu
 		cp -a builder/python-radexreader-$version/ builder/python-radexreader-$version+src/
-		# debian only
+		# Debian only
 		cd builder/python-radexreader-$version/
 	else
-		# ubuntu only
+		# Ubuntu only
 		cp -a builder/python-radexreader-$version+src/ builder/python-radexreader-$version+$serie/
 		cd builder/python-radexreader-$version+$serie/
 	fi
 
 	dh_make -a -s -y -f ../python-radexreader-$version.tar.gz -p python-radexreader
 
-	rm -f debian/*ex debian/*EX debian/README* debian/*doc* debian/deb.sh
+	rm -f debian/*ex debian/*EX debian/README* debian/*doc*
 	mkdir debian/upstream
+	rm debian/deb.sh
 	mv debian/metadata     debian/upstream/metadata
 	mv debian/udev         debian/python3-radexreader.udev
 	mv debian/metainfo.xml debian/python3-radexreader.metainfo.xml
 	chmod +x debian/radexreader.install
 
-	if [ $serie = "unstable" ]; then
+	if [ $serie = "experimental" ]; then
 		dpkg-buildpackage -us -uc
 	else
-		# debhelper: unstable:13 hirsute:13 focal:12 bionic:9 xenial:9 trusty:9
+		# debhelper: experimental:13 focal:12 bionic:9 xenial:9 trusty:9
 		if [ $serie = "focal" ]; then
 			sed -i 's/debhelper-compat (= 13)/debhelper-compat (= 12)/g' debian/control
 		fi
@@ -73,27 +74,27 @@ for serie in unstable impish hirsute focal bionic xenial trusty; do
 			sed -i ':a;N;$!ba;s/Rules-Requires-Root: no\n//g' debian/control
 			echo 9 > debian/compat
 		fi
-		sed -i 's/unstable/'$serie'/g' debian/changelog
+		sed -i 's/experimental/'$serie'/g' debian/changelog
 		sed -i 's/-1) /-1+'$serie') /' debian/changelog
 		dpkg-buildpackage -us -uc -ui -d -S
 	fi
-	echo "==========================="
+	echo "=========================== debsign =="
 	cd ..
 
-	if [ $serie = "unstable" ]; then
-		# debian only
+	if [ $serie = "experimental" ]; then
+		# Debian only
 		debsign python-radexreader_$version-*.changes
-		echo "==========================="
-		lintian -EviIL +pedantic python-radexreader_$version-*.deb
+		echo "=========================== lintian =="
+		lintian -EviIL +pedantic python*-radexreader_$version-*.deb
 	else
-		# ubuntu only
+		# Ubuntu only
 		debsign python-radexreader_$version*+$serie*source.changes
 	fi
 	echo "==========================="
 	cd ..
 done
 
-ls -dltrh builder/*.deb builder/*.changes
+ls -dlth "$PWD/"builder/*.deb "$PWD/"builder/*.changes
 echo "==========================="
 
 # cleanup

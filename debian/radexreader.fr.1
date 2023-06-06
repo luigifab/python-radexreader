@@ -1,0 +1,52 @@
+.Dd 01/01/22
+.Dt RADEXREADER 1
+.Os Linux
+.Sh NAME
+.Nm radexreader
+.Nd Lecteur pour les compteurs Geiger RADEX RD1212 et ONE.
+.Sh SYNOPSIS
+.Nm
+.Op Ar tail
+.Op Ar jsontail
+.Op Ar last
+.Op Ar jsonlast
+.Op Ar all
+.Op Ar jsonall
+.Op Ar erase
+.Sh DESCRIPTION
+Le RadexReader est un pilote en espace utilisateur pour les compteurs
+Geiger RADEX RD1212 et RADEX ONE. Il permet de lire et d'effacer les
+données stockées via USB.
+.Bl -tag -width "jsontail"
+.It Ar tail
+Lecture et affichage de la mesure. Boucle infinie, une ligne par mesure.
+.It Ar jsontail
+Lecture et affichage au format json de la mesure. Boucle infinie, une ligne par mesure.
+.It Ar last
+Lecture et affichage de la mesure.
+.It Ar jsonlast
+Lecture et affichage au format json de la mesure.
+.It Ar all
+Lecture et affichage de toutes les mesures enregistrées (RD1212 uniquement).
+.It Ar jsonall
+Lecture et affichage au format json de toutes les mesures enregistrées (RD1212 uniquement).
+.It Ar erase
+Supprime les mesures enregistrées (RD1212 uniquement).
+.El
+.Pp
+Les valeurs indiquées ne sont que des approximations. La valeur réelle ne peut être mesurée qu'avec un appareil professionnel approprié.
+.Sh OUTPUT EXAMPLES
+.Bl -tag -width
+.It Ar tail last all
+.nf
+.Rs
+2022-01-01 19:13:17    0.14 µSv/h  ±57% (0.06 ≤ 0.14 ≤ 0.22)
+.Re
+.fi
+.It Ar jsontail jsonlast jsonall
+.nf
+.Rs
+{"1641064637":{"pct":57.8571,"min":0.0590,"val":0.14,"max":0.221,"time":1641067277}[, ...]}
+.Re
+.fi
+.El

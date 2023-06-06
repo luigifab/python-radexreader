@@ -3,7 +3,7 @@
 # Fedora: sudo dnf install python3-devel
 
 cd "$(dirname "$0")"
-version="1.2.1"
+version="1.2.2"
 rm -rf builder/
 
 
@@ -37,7 +37,7 @@ python3 setup.py sdist bdist_wheel
 cd ../..
 mv builder/radexreader-${version}/dist/* .
 echo "==========================="
-ls -dltrh $PWD/*.gz $PWD/*.whl
+ls -dlth $PWD/*.gz $PWD/*.whl
 echo "==========================="
 
 # cleanup

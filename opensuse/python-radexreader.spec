@@ -1,6 +1,6 @@
 %{?!python_module:%define python_module() python-%{**} python3-%{**}}
 Name:          python-radexreader
-Version:       1.2.1
+Version:       1.2.2
 Release:       0
 Summary:       Reader for the RADEX RD1212 and ONE Geiger counters
 License:       GPL-2.0-or-later
@@ -44,11 +44,16 @@ cd src
 %python_expand %fdupes %{buildroot}%{$python_sitelib}
 mkdir -p %{buildroot}%{_bindir}/
 mkdir -p %{buildroot}%{_udevrulesdir}/
+mkdir -p %{buildroot}%{_mandir}/man1/ %{buildroot}%{_mandir}/fr/man1/
 %python_expand install -p -m 644 ../debian/udev %{buildroot}%{_udevrulesdir}/60-python%{$python_bin_suffix}-radexreader.rules
+install -p -m 644 ../debian/radexreader.1 %{buildroot}%{_mandir}/man1/radexreader.1
+install -p -m 644 ../debian/radexreader.fr.1 %{buildroot}%{_mandir}/fr/man1/radexreader.1
 install -p -m 755 ../src/radexreader.py %{buildroot}%{_bindir}/radexreader
 %python_clone -a %{buildroot}%{_bindir}/radexreader
 
 %files %{python_files}
+%{_mandir}/man1/radexreader.1*
+%{_mandir}/*/man1/radexreader.1*
 %license LICENSE
 %doc README.md
 %python_alternative %{_bindir}/radexreader
@@ -64,11 +69,14 @@ install -p -m 755 ../src/radexreader.py %{buildroot}%{_bindir}/radexreader
 
 
 %changelog
+* Tue Jun 06 2023 Fabrice Creuzot <code@luigifab.fr> - 1.2.2-1
+- New upstream release
+
 * Thu Sep 09 2021 Fabrice Creuzot <code@luigifab.fr> - 1.2.1-1
-- New upstream version
+- New upstream release
 
 * Wed May 05 2021 Fabrice Creuzot <code@luigifab.fr> - 1.2.0-1
-- New upstream version
+- New upstream release
 
 * Sun Apr 04 2021 Fabrice Creuzot <code@luigifab.fr> - 1.1.0-1
 - Initial openSUSE package release

@@ -1,11 +1,10 @@
 #!/usr/bin/python3
 # -*- coding: utf8 -*-
 # Created L/19/10/2020
-# Updated J/06/05/2021
+# Updated D/01/01/2023
 #
-# Copyright 2020-2021 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+# Copyright 2020-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
 # https://github.com/luigifab/python-radexreader
-# https://www.luigifab.fr/python/radexreader
 #
 # This program is free software, you can redistribute it or modify
 # it under the terms of the GNU General Public License (GPL) as published
@@ -25,18 +24,20 @@ import usb
 import serial
 
 # https://stackoverflow.com/a/62804772/2980105
-# prevent auto import for "import radexreader"when filename is "radexreader.py"
+# prevent auto import for "import radexreader" when filename is "radexreader.py"
 sys.path = sys.path[1:]
 
-try:
-	import radexreader
-	msg = 'Information   python3-radexreader ' + radexreader.__version__
-	msg += ' with python ' + python_version() + ' + pyusb ' + usb.__version__ + ' + pyserial ' + serial.__version__
-except:
+# python3 .../src/radexreader.py when radexreader is installed or not
+if ".py" in sys.argv[0]:
 	import os
-	sys.path.append(os.path.abspath(__file__).replace('radexreader.py', ''))
+	sys.path.insert(0, os.path.abspath(sys.argv[0]).replace('radexreader.py', ''))
 	import radexreader
 	msg = 'Information   radexreader ' + radexreader.__version__
+	msg += ' with python ' + python_version() + ' + pyusb ' + usb.__version__ + ' + pyserial ' + serial.__version__
+# standard command radexreader
+else:
+	import radexreader
+	msg = 'Information   python3-radexreader ' + radexreader.__version__
 	msg += ' with python ' + python_version() + ' + pyusb ' + usb.__version__ + ' + pyserial ' + serial.__version__
 
 if len(sys.argv) > 1:
@@ -76,7 +77,7 @@ if len(sys.argv) > 1:
 			time.sleep(10)
 		exit(0)
 
-	if sys.argv[1] == 'tailjson':
+	if sys.argv[1] == 'jsontail' or sys.argv[1] == 'tailjson':
 		import json
 		reader = radexreader.RadexReader()
 		prev   = None
@@ -84,12 +85,12 @@ if len(sys.argv) > 1:
 			measures = reader.read(True)
 			for timestamp, measure in measures.items():
 				if timestamp != prev:
-					print(json.dumps(measure))
+					print(json.dumps({timestamp: measure}))
 				prev = timestamp
 			time.sleep(10)
 		exit(0)
 
-	if sys.argv[1] == 'readlast':
+	if sys.argv[1] == 'last' or sys.argv[1] == 'readlast':
 		print(msg)
 		reader = radexreader.RadexReader()
 		reader.print_info()
@@ -118,7 +119,7 @@ if len(sys.argv) > 1:
 		print(json.dumps(radexreader.RadexReader().read(True)))
 		exit(0)
 
-	if sys.argv[1] == 'readall':
+	if sys.argv[1] == 'all' or sys.argv[1] == 'readall':
 		print(msg)
 		reader = radexreader.RadexReader()
 		reader.print_info()
@@ -147,5 +148,5 @@ if len(sys.argv) > 1:
 		print(json.dumps(radexreader.RadexReader().read(False)))
 		exit(0)
 
-print('Usage: radexreader erase|tail|tailjson|readlast|jsonlast|readall|jsonall')
+print('Usage: radexreader erase|tail|jsontail|last|jsonlast|all|jsonall')
 exit(-1)
