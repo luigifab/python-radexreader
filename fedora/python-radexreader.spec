@@ -19,7 +19,7 @@ de débrancher l'appareil après l'installation.}
 
 Name:          python-radexreader
 Version:       1.2.2
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       %{common_summary_en}
 Summary(fr):   %{common_summary_fr}
 License:       GPLv2+
@@ -27,7 +27,7 @@ URL:           https://github.com/luigifab/python-radexreader
 Source0:       %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 
 BuildArch:     noarch
-BuildRequires: hunspell-fr
+BuildRequires: aspell-fr
 
 %description %{common_description_en}
 %description -l fr %{common_description_fr}
@@ -63,23 +63,26 @@ cd src
 mkdir -p %{buildroot}%{_bindir}/
 mkdir -p %{buildroot}/lib/udev/rules.d/
 mkdir -p %{buildroot}%{_mandir}/man1/ %{buildroot}%{_mandir}/fr/man1/
-install -p -m 644 ../debian/udev %{buildroot}/lib/udev/rules.d/60-python3-radexreader.rules
+install -p -m 755 ../src/radexreader.py %{buildroot}%{_bindir}/radexreader
 install -p -m 644 ../debian/radexreader.1 %{buildroot}%{_mandir}/man1/radexreader.1
 install -p -m 644 ../debian/radexreader.fr.1 %{buildroot}%{_mandir}/fr/man1/radexreader.1
-install -p -m 755 ../src/radexreader.py %{buildroot}%{_bindir}/radexreader
+install -p -m 644 ../debian/udev %{buildroot}/lib/udev/rules.d/60-python3-radexreader.rules
 
 %files -n python3-radexreader
-%{_mandir}/man1/radexreader.1*
-%{_mandir}/*/man1/radexreader.1*
 %license LICENSE
 %doc README.md
 %ghost %{python3_sitelib}/radexreader*egg-info/
 %{python3_sitelib}/radexreader/
 %{_bindir}/radexreader
+%{_mandir}/man1/radexreader.1*
+%{_mandir}/*/man1/radexreader.1*
 /lib/udev/rules.d/60-python3-radexreader.rules
 
 
 %changelog
+* Fri Jun 16 2023 Fabrice Creuzot <code@luigifab.fr> - 1.2.2-2
+- Package spec update
+
 * Tue Jun 06 2023 Fabrice Creuzot <code@luigifab.fr> - 1.2.2-1
 - New upstream release
 

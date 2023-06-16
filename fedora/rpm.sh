@@ -1,5 +1,5 @@
 #!/bin/bash
-# Fedora: sudo dnf install rpmdevtools rpm-sign python3-devel hunspell-fr
+# Fedora: sudo dnf install rpmdevtools rpm-sign python3-devel aspell-fr enchant2-aspell
 # Fedora: configure: error: C compiler cannot create executables? remove and reinstall glibc-devel gcc
 
 cd "$(dirname "$0")"
