@@ -1,6 +1,6 @@
 %{?!python_module:%define python_module() python-%{**} python3-%{**}}
 Name:          python-radexreader
-Version:       1.2.2
+Version:       1.2.3
 Release:       0
 Summary:       Reader for the RADEX RD1212 and ONE Geiger counters
 License:       GPL-2.0-or-later
@@ -71,6 +71,9 @@ install -p -m 644 ../debian/radexreader.fr.1 %{buildroot}%{_mandir}/fr/man1/rade
 
 
 %changelog
+* Tue Oct 10 2023 Fabrice Creuzot <code@luigifab.fr> - 1.2.3-1
+- New upstream release
+
 * Fri Jun 16 2023 Fabrice Creuzot <code@luigifab.fr> - 1.2.2-2
 - Package spec update
 

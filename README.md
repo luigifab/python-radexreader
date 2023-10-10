@@ -42,10 +42,11 @@ It require *libusb*, *pyusb* and *pyserial*.
 
 * `sudo docker run --rm --user root -it --privileged -v /dev:/dev python:3.x-alpine /bin/sh` then: `apk update ; apk add libusb ; python3 -m pip install radexreader`
 
-#### Alternative installation for Debian and Ubuntu
+#### Repository for Debian and Ubuntu
 
 ```bash
-# https://launchpad.net/~luigifab/+archive/ubuntu/packages
+# PPA: https://launchpad.net/~luigifab/+archive/ubuntu/packages
+# with Debian 12+ you can use mantic+ instead of focal (https://unix.stackexchange.com/a/669008/364800)
 sudo add-apt-repository ppa:luigifab/packages
 sudo apt update
 sudo apt install python3-radexreader radexreader
@@ -71,8 +72,8 @@ pub   rsa4096 2020-10-31 [SC]
 
 ## Copyright
 
-- Current version: 1.2.2 (06/06/2023)
-- Compatibility: Python 3.3 / 3.4 / 3.5 / 3.6 / 3.7 / 3.8 / 3.9 / 3.10 / 3.11
+- Current version: 1.2.3 (10/10/2023)
+- Compatibility: Python 3.3 / 3.4 / 3.5 / 3.6 / 3.7 / 3.8 / 3.9 / 3.10 / 3.11 / 3.12
 - Links: [luigifab.fr](https://www.luigifab.fr/python/radexreader) - [github.com](https://github.com/luigifab/python-radexreader) - [pypi.org](https://pypi.org/project/radexreader/)\
 [Debian python-radexreader.deb](https://packages.debian.org/python3-radexreader)\
 [Fedora python-radexreader.rpm](https://src.fedoraproject.org/rpms/python-radexreader)\

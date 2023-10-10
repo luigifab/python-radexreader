@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf8 -*-
 # Created L/19/10/2020
-# Updated S/04/03/2023
+# Updated S/07/10/2023
 #
 # Copyright 2020-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
 # https://github.com/luigifab/python-radexreader
@@ -27,7 +27,7 @@ import usb.backend.libusb1
 import serial
 import serial.tools.list_ports
 
-__version__ = '1.2.2'
+__version__ = '1.2.3'
 
 class RadexReader():
 
@@ -182,7 +182,7 @@ class RadexReader():
 
 		values = {}
 		# from 0x0 to 0xb3
-		if last:
+		if last and self.com == 'RD1212v2':
 			keys = [0x0]
 		elif last and self.com == 'RD1212v1':
 			keys = list(reversed(range(0x0, 0xb4)))

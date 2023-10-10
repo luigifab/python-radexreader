@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf8 -*-
 # Created L/19/10/2020
-# Updated D/01/01/2023
+# Updated D/08/10/2023
 #
 # Copyright 2020-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
 # https://github.com/luigifab/python-radexreader
@@ -16,12 +16,17 @@
 # merchantability or fitness for a particular purpose. See the
 # GNU General Public License (GPL) for more details.
 
-from datetime import datetime
+import datetime
 from platform import python_version
 import sys
 import time
 import usb
 import serial
+
+try:
+	datetime.UTC
+except AttributeError:
+	datetime.UTC = None
 
 # https://stackoverflow.com/a/62804772/2980105
 # prevent auto import for "import radexreader" when filename is "radexreader.py"
@@ -60,7 +65,7 @@ if len(sys.argv) > 1:
 			for timestamp, measure in measures.items():
 				if timestamp != prev:
 					print('%s  %s µSv/h  ±%s%% (%s ≤ %s ≤ %s)' % (
-						str(datetime.utcfromtimestamp(timestamp)),
+						str(datetime.datetime.fromtimestamp(timestamp, datetime.UTC)),
 						str('{:.2f}'.format(measure['val'])).rjust(6, ' '),
 						str(int(measure['pct'])),
 						str('{:.2f}'.format(measure['min'])),
@@ -97,7 +102,7 @@ if len(sys.argv) > 1:
 		measures = reader.read(True)
 		for timestamp, measure in measures.items():
 			print('%s  %s µSv/h  ±%s%% (%s ≤ %s ≤ %s)' % (
-				str(datetime.utcfromtimestamp(timestamp)),
+				str(datetime.datetime.fromtimestamp(timestamp, datetime.UTC)),
 				str('{:.2f}'.format(measure['val'])).rjust(6, ' '),
 				str(int(measure['pct'])),
 				str('{:.2f}'.format(measure['min'])),
@@ -126,7 +131,7 @@ if len(sys.argv) > 1:
 		measures = reader.read(False)
 		for timestamp, measure in measures.items():
 			print('%s  %s µSv/h  ±%s%% (%s ≤ %s ≤ %s)' % (
-				str(datetime.utcfromtimestamp(timestamp)),
+				str(datetime.datetime.fromtimestamp(timestamp, datetime.UTC)),
 				str('{:.2f}'.format(measure['val'])).rjust(6, ' '),
 				str(int(measure['pct'])),
 				str('{:.2f}'.format(measure['min'])),
