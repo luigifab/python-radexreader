@@ -3,20 +3,20 @@
 # Fedora: sudo dnf install python3-devel
 
 cd "$(dirname "$0")"
-version="1.2.3"
+version="1.2.4"
 rm -rf builder/
 
-
-# copy to a tmp directory
 mkdir builder
 mkdir builder/radexreader-${version}
 
+# copy to a tmp directory
 cp -r ../src/*  builder/radexreader-${version}/
 cp ../README.md builder/radexreader-${version}/
 cp /usr/share/common-licenses/GPL-2              builder/radexreader-${version}/LICENSE
 mv builder/radexreader-${version}/radexreader.py builder/radexreader-${version}/radexreader/
 sed -i 's/python3-radexreader /python3-radexreader-pypi /g' builder/radexreader-${version}/radexreader/radexreader.py
 sed -i 's/Usage: radexreader /Usage: radexreader.py /g'     builder/radexreader-${version}/radexreader/radexreader.py
+
 
 
 

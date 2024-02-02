@@ -3,7 +3,7 @@
 # Created L/19/10/2020
 # Updated D/08/10/2023
 #
-# Copyright 2020-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+# Copyright 2020-2024 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
 # https://github.com/luigifab/python-radexreader
 #
 # This program is free software, you can redistribute it or modify

@@ -72,13 +72,20 @@ pub   rsa4096 2020-10-31 [SC]
 
 ## Copyright
 
-- Current version: 1.2.3 (10/10/2023)
+- Current version: 1.2.4 (02/02/2024)
 - Compatibility: Python 3.3 / 3.4 / 3.5 / 3.6 / 3.7 / 3.8 / 3.9 / 3.10 / 3.11 / 3.12
-- Links: [luigifab.fr](https://www.luigifab.fr/python/radexreader) - [github.com](https://github.com/luigifab/python-radexreader) - [pypi.org](https://pypi.org/project/radexreader/)\
-[Debian python-radexreader.deb](https://packages.debian.org/python3-radexreader)\
+- Links: [luigifab.fr](https://www.luigifab.fr/python/radexreader) - [github.com](https://github.com/luigifab/python-radexreader) - [PyPI](https://pypi.org/project/radexreader/)\
+[Arch Linux python-radexreader.zst](https://aur.archlinux.org/packages/python-radexreader)\
+[Debian python-radexreader.deb](https://packages.debian.org/python3-radexreader)
+  *([ITP](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=973447),
+   [RFS](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=974217))*\
 [Fedora python-radexreader.rpm](https://src.fedoraproject.org/rpms/python-radexreader)\
 [openSUSE python-radexreader.rpm](https://software.opensuse.org/package/python-radexreader)\
 [Ubuntu PPA](https://launchpad.net/~luigifab/+archive/ubuntu/packages)
 
 This program is provided under the terms of the **GNU GPLv2+** license.\
 If you like, take some of your time to improve some translations, go to https://bit.ly/2HyCCEc.
+
+## Packages in official distros repositories
+
+[![Packages status](https://repology.org/badge/vertical-allrepos/python:radexreader.svg?header=radexreader)](https://repology.org/project/python:radexreader/versions)

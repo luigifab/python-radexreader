@@ -3,11 +3,11 @@
 
 
 cd "$(dirname "$0")"
-version="1.2.3"
+version="1.2.4"
 
 
-rm -rf builder/
 mkdir -p builder ~/rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
+find builder/* ! -name "*$version*.rpm" ! -name "*$version*.gz" -exec rm -rf {} + 2>/dev/null
 
 # copy to a tmp directory
 if [ true ]; then
@@ -20,7 +20,7 @@ else
 	rm -rf /tmp/$temp/*/builder/ /tmp/$temp/radexreader/__pycache__/
 
 	mv /tmp/$temp builder/
-	cp /usr/share/licenses/kernel-firmware/GPL-2 builder/$temp/LICENSE
+	cp /usr/share/licenses/*-firmware/GPL-2 builder/$temp/LICENSE # * = kernel
 
 	cd builder/
 	tar czf $temp.tar.gz $temp
@@ -32,10 +32,10 @@ fi
 
 # create package (rpm sign https://access.redhat.com/articles/3359321)
 rpmbuild -ba python-radexreader.spec
-rpm --addsign ~/rpmbuild/RPMS/*/*.rpm
-rpm --addsign ~/rpmbuild/SRPMS/*.rpm
-mv ~/rpmbuild/RPMS/*/*.rpm builder/
-mv ~/rpmbuild/SRPMS/*.rpm builder/
+rpm --addsign ~/rpmbuild/RPMS/*/python*radexreader*.rpm
+rpm --addsign ~/rpmbuild/SRPMS/python*radexreader*.rpm
+mv ~/rpmbuild/RPMS/*/python*radexreader*.rpm builder/
+mv ~/rpmbuild/SRPMS/python*radexreader*.rpm builder/
 echo "==========================="
 rpm --checksig builder/*.rpm
 echo "==========================="

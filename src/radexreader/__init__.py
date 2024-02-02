@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 # -*- coding: utf8 -*-
 # Created L/19/10/2020
-# Updated S/07/10/2023
+# Updated L/01/01/2024
 #
-# Copyright 2020-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+# Copyright 2020-2024 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
 # https://github.com/luigifab/python-radexreader
 #
 # This program is free software, you can redistribute it or modify
@@ -27,7 +27,7 @@ import usb.backend.libusb1
 import serial
 import serial.tools.list_ports
 
-__version__ = '1.2.3'
+__version__ = '1.2.4'
 
 class RadexReader():
 
@@ -218,11 +218,12 @@ class RadexReader():
 					'time': timestamp,
 					'interval': interval[hexa[8]]
 				}
-				# to get last measure with RD1212v1
-				if last and self.com == 'RD1212v1':
-					break
 
-		# sort by date
+		# most recent measure
+		if last:
+			return dict({ max(values): values[max(values)] }) if len(values) > 0 else values
+
+		# sort measures by date
 		return dict(sorted(values.items(), key=operator.itemgetter(0)))
 
 	def readOne(self):
@@ -279,3 +280,4 @@ class RadexReader():
 			self.hid_set_report((0x12, 0x12, 0x01, 0x03, 0, 0, 0, 0, 0, 0, 0, 0, 0x3c, 0x84))
 		elif self.com == 'RD1212v1':
 			self.hid_set_report((0x12, 0x12, 0x01, 0x03, 0, 0, 0, 0, 0, 0, 0, 0, 0x3c, 0x84))
+

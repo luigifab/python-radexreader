@@ -3,11 +3,11 @@
 
 
 cd "$(dirname "$0")"
-version="1.2.3"
+version="1.2.4"
 
 
-rm -rf builder/
 mkdir builder
+rm -rf builder/*
 
 # copy to a tmp directory
 if [ true ]; then
@@ -31,10 +31,10 @@ fi
 
 
 # create packages for Debian and Ubuntu
-for serie in experimental mantic lunar jammy focal bionic xenial trusty; do
+for serie in experimental noble mantic jammy focal bionic xenial trusty; do
 
 	if [ $serie = "experimental" ]; then
-		# for Ubuntu
+		# copy for Ubuntu
 		cp -a builder/python-radexreader-$version/ builder/python-radexreader-$version+src/
 		# Debian only
 		cd builder/python-radexreader-$version/
