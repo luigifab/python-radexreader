@@ -19,10 +19,11 @@ de débrancher l'appareil après l'installation.}
 
 Name:          python-radexreader
 Version:       1.2.4
-Release:       1%{?dist}
+Release:       %mkrel 1
 Summary:       %{common_summary_en}
 Summary(fr):   %{common_summary_fr}
 License:       GPLv2+
+Group:         Development/Python
 URL:           https://github.com/luigifab/python-radexreader
 Source0:       %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 
@@ -34,15 +35,15 @@ BuildRequires: aspell-fr
 
 
 %package -n python3-radexreader
-%py_provides python3-radexreader
+%{?python_provide:%python_provide python3-radexreader}
 Summary:       %{common_summary_en}
 Summary(fr):   %{common_summary_fr}
 
+BuildRequires: pyproject-rpm-macros
 BuildRequires: python3-devel
-BuildRequires: python3-setuptools
-Requires:      python3
-Requires:      %{py3_dist pyserial}
-Requires:      %{py3_dist pyusb}
+BuildRequires: python3dist(setuptools)
+Requires:      python3dist(pyserial)
+Requires:      python3dist(pyusb)
 
 %description -n python3-radexreader %{common_description_en}
 %description -n python3-radexreader -l fr %{common_description_fr}
@@ -78,19 +79,4 @@ install -Dpm 644 ../debian/udev %{buildroot}/lib/udev/rules.d/60-%{name}.rules
 
 %changelog
 * Fri Feb 02 2024 Fabrice Creuzot <code@luigifab.fr> - 1.2.4-1
-- New upstream release
-
-* Tue Oct 10 2023 Fabrice Creuzot <code@luigifab.fr> - 1.2.3-1
-- New upstream release
-
-* Fri Jun 16 2023 Fabrice Creuzot <code@luigifab.fr> - 1.2.2-2
-- Package spec update
-
-* Tue Jun 06 2023 Fabrice Creuzot <code@luigifab.fr> - 1.2.2-1
-- New upstream release
-
-* Thu Sep 09 2021 Fabrice Creuzot <code@luigifab.fr> - 1.2.1-1
-- New upstream release
-
-* Wed May 05 2021 Fabrice Creuzot <code@luigifab.fr> - 1.2.0-1
-- Initial Fedora package release (Closes: rhbz#1896742)
+- Initial Mageia package release (Closes: mbz#...)

@@ -42,16 +42,13 @@ cd src
 cd src
 %python_install
 %python_expand %fdupes %{buildroot}%{$python_sitelib}
-mkdir -p %{buildroot}%{_bindir}/
-mkdir -p %{buildroot}%{_mandir}/man1/ %{buildroot}%{_mandir}/fr/man1/
-mkdir -p %{buildroot}%{_udevrulesdir}/
-install -pm 755 radexreader.py %{buildroot}%{_bindir}/radexreader
-install -pm 644 ../debian/radexreader.1 %{buildroot}%{_mandir}/man1/radexreader.1
-install -pm 644 ../debian/radexreader.fr.1 %{buildroot}%{_mandir}/fr/man1/radexreader.1
+install -Dpm 755 radexreader.py %{buildroot}%{_bindir}/radexreader
+install -Dpm 644 ../debian/radexreader.1 %{buildroot}%{_mandir}/man1/radexreader.1
+install -Dpm 644 ../debian/radexreader.fr.1 %{buildroot}%{_mandir}/fr/man1/radexreader.1
 %python_clone -a %{buildroot}%{_bindir}/radexreader
 %python_clone -a %{buildroot}%{_mandir}/man1/radexreader.1
 %python_clone -a %{buildroot}%{_mandir}/fr/man1/radexreader.1
-%python_expand install -pm 644 ../debian/udev %{buildroot}%{_udevrulesdir}/60-python%{$python_bin_suffix}-radexreader.rules
+%python_expand install -Dpm 644 ../debian/udev %{buildroot}%{_udevrulesdir}/60-python%{$python_bin_suffix}-radexreader.rules
 
 %files %{python_files}
 %license LICENSE

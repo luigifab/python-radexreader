@@ -20,7 +20,7 @@ This tool was initially developed with RD1212 v2.48.
 
 It require *libusb*, *pyusb* and *pyserial*.
 
-#### Installation for Debian and Ubuntu
+#### Installation for Debian, Ubuntu, Trisquel, Linux Mint, MX Linux
 
 * `sudo apt install python3-radexreader radexreader`
 
@@ -32,6 +32,10 @@ It require *libusb*, *pyusb* and *pyserial*.
 
 * `sudo zypper install python3-radexreader`
 
+#### Installation for Mageia
+
+* `sudo urpmi python3-radexreader`
+
 #### Installation with PIP
 
 * With Linux: `sudo python3 -m pip install radexreader` (+libusb)
@@ -42,11 +46,15 @@ It require *libusb*, *pyusb* and *pyserial*.
 
 * `sudo docker run --rm --user root -it --privileged -v /dev:/dev python:3.x-alpine /bin/sh` then: `apk update ; apk add libusb ; python3 -m pip install radexreader`
 
-#### Repository for Debian and Ubuntu
+#### Alternative installation for Debian, Ubuntu, Trisquel, Linux Mint, MX Linux
 
 ```bash
 # PPA: https://launchpad.net/~luigifab/+archive/ubuntu/packages
 # with Debian 12+ you can use mantic+ instead of focal (https://unix.stackexchange.com/a/669008/364800)
+# for Trisquel you can use focal for nabia, jammy for aramo
+# for Linux Mint you can use focal for 20.x and 5, jammy for 21.x, noble for 22.x and 6
+# for MX Linux you can use focal for 19.x and 21.x, noble for 23.x
+
 sudo add-apt-repository ppa:luigifab/packages
 sudo apt update
 sudo apt install python3-radexreader radexreader
@@ -60,8 +68,7 @@ sudo wget -O /etc/apt/trusted.gpg.d/luigifab.gpg https://www.luigifab.fr/apt.gpg
 echo "deb http://ppa.launchpad.net/luigifab/packages/ubuntu focal main" | sudo tee -a /etc/apt/sources.list
 sudo apt update
 sudo apt install python3-radexreader radexreader
-```
-```bash
+
 # sha256sum /etc/apt/trusted.gpg.d/luigifab.gpg
 578c89a677048e38007462d543686b53587efba9f93814601169253c45ff9213
 # apt-key list
@@ -76,11 +83,12 @@ pub   rsa4096 2020-10-31 [SC]
 - Compatibility: Python 3.3 / 3.4 / 3.5 / 3.6 / 3.7 / 3.8 / 3.9 / 3.10 / 3.11 / 3.12
 - Links: [luigifab.fr](https://www.luigifab.fr/python/radexreader) - [github.com](https://github.com/luigifab/python-radexreader) - [PyPI](https://pypi.org/project/radexreader/)\
 [Arch Linux python-radexreader.zst](https://aur.archlinux.org/packages/python-radexreader)\
-[Debian python-radexreader.deb](https://packages.debian.org/python3-radexreader)
+[Debian python-radexreader.deb, radexreader.deb](https://packages.debian.org/python3-radexreader)
   *([ITP](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=973447),
    [RFS](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=974217))*\
 [Fedora python-radexreader.rpm](https://src.fedoraproject.org/rpms/python-radexreader)\
 [openSUSE python-radexreader.rpm](https://software.opensuse.org/package/python-radexreader)\
+[Mageia python-radexreader.rpm](https://madb.mageia.org/package/show/name/python-radexreader/arch/x86_64)\
 [Ubuntu PPA](https://launchpad.net/~luigifab/+archive/ubuntu/packages)
 
 This program is provided under the terms of the **GNU GPLv2+** license.\
@@ -88,4 +96,4 @@ If you like, take some of your time to improve some translations, go to https://
 
 ## Packages in official distros repositories
 
-[![Packages status](https://repology.org/badge/vertical-allrepos/python:radexreader.svg?header=radexreader)](https://repology.org/project/python:radexreader/versions)
+[![Packages status](https://repology.org/badge/vertical-allrepos/python:radexreader.svg?header=radexreader&exclude_unsupported=1)](https://repology.org/project/python:radexreader/versions)

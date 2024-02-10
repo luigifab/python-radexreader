@@ -1,6 +1,6 @@
 #!/bin/bash
-# Fedora: sudo dnf install rpmdevtools rpmlint rpm-sign python3-devel aspell-fr enchant2-aspell
-# Fedora: configure: error: C compiler cannot create executables? remove and reinstall glibc-devel gcc
+# Mageia: sudo urpmi --no-recommends rpmdevtools rpmlint rpmlint-mageia-policy rpm-sign python3-devel pyproject-rpm-macros aspell-fr enchant2-aspell
+
 
 cd "$(dirname "$0")"
 version="1.2.4"
@@ -20,7 +20,7 @@ else
 	rm -rf /tmp/$temp/*/builder/ /tmp/$temp/radexreader/__pycache__/
 
 	mv /tmp/$temp builder/
-	cp /usr/share/common-licenses/GPL-2 builder/$temp/LICENSE
+	cp /usr/share/common-licenses/GPLv2 builder/$temp/LICENSE
 
 	cd builder/
 	tar czf $temp.tar.gz $temp
