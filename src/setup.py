@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 # -*- coding: utf8 -*-
 # Created L/19/10/2020
-# Updated J/12/10/2023
+# Updated S/01/03/2025
 #
-# Copyright 2020-2024 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+# Copyright 2020-2025 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
 # https://github.com/luigifab/python-radexreader
 #
 # This program is free software, you can redistribute it or modify
@@ -26,7 +26,7 @@ try:
 		long_description = fh.read().replace('(images/', '(https://raw.githubusercontent.com/luigifab/python-radexreader/master/images/')
 	setup(
 		name='radexreader',
-		version='1.2.4',
+		version='1.2.5',
 		description='Python library for the RADEX RD1212 and the RADEX ONE Geiger counters.',
 		long_description=long_description,
 		long_description_content_type='text/markdown',
@@ -40,7 +40,7 @@ try:
 except:
 	setup(
 		name='radexreader',
-		version='1.2.4',
+		version='1.2.5',
 		description='Python library for the RADEX RD1212 and the RADEX ONE Geiger counters.',
 		license='GPL 2',
 		author='Fabrice Creuzot',

@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 # -*- coding: utf8 -*-
 # Created L/19/10/2020
-# Updated L/01/01/2024
+# Updated L/12/02/2024
 #
-# Copyright 2020-2024 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+# Copyright 2020-2025 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
 # https://github.com/luigifab/python-radexreader
 #
 # This program is free software, you can redistribute it or modify
@@ -27,7 +27,7 @@ import usb.backend.libusb1
 import serial
 import serial.tools.list_ports
 
-__version__ = '1.2.4'
+__version__ = '1.2.5'
 
 class RadexReader():
 
@@ -38,6 +38,16 @@ class RadexReader():
 	keyB = None
 	keyC = None
 	keyD = None
+
+	def disconnect(self):
+		usb.util.dispose_resources(self.usb)
+		com = None
+		usb = None
+		serial = None
+		keyA = None
+		keyB = None
+		keyC = None
+		keyD = None
 
 	def __init__(self):
 
@@ -95,10 +105,28 @@ class RadexReader():
 			return self.serial
 		return self.usb
 
+	def get_info(self):
+		if self.com == 'RD1212v2':
+			return ('RD1212v2 (' +
+				hex(self.usb.idVendor)  + ' ' + usb.util.get_string(self.usb, self.usb.iManufacturer) + ', ' +
+				hex(self.usb.idProduct) + ' ' + usb.util.get_string(self.usb, self.usb.iProduct) + ')')
+		elif self.com == 'RD1212v1':
+			return ('RD1212v1 (' +
+				hex(self.usb.idVendor)  + ' ' + usb.util.get_string(self.usb, self.usb.iManufacturer) + ', ' +
+				hex(self.usb.idProduct) + ' ' + usb.util.get_string(self.usb, self.usb.iProduct) + ', ' +
+				self.serial.port + ')')
+		elif self.com == 'ONEv1':
+			if sys.platform != 'win32' and sys.platform != 'cygwin':
+				return ('ONEv1 (' +
+					hex(self.usb.idVendor)  + ' ' + usb.util.get_string(self.usb, self.usb.iManufacturer) + ', ' +
+					hex(self.usb.idProduct) + ' ' + usb.util.get_string(self.usb, self.usb.iProduct) + ')')
+			else:
+				return 'ONEv1 (' + self.serial.port + ')'
+
 	def print_info(self):
 		if self.com == 'RD1212v2':
-			print('Manufacturer  ' + hex(self.usb.idVendor).ljust(7, ' ')  + ' ' + usb.util.get_string(self.usb, self.usb.iManufacturer))
-			print('Product       ' + hex(self.usb.idProduct).ljust(7, ' ') + ' ' + usb.util.get_string(self.usb, self.usb.iProduct))
+			print(' manufacturer  ' + hex(self.usb.idVendor).ljust(7, ' ')  + ' ' + usb.util.get_string(self.usb, self.usb.iManufacturer))
+			print(' product       ' + hex(self.usb.idProduct).ljust(7, ' ') + ' ' + usb.util.get_string(self.usb, self.usb.iProduct))
 			print()
 			# https://www.criirad.org/laboratoire/radiametres/compteur-geiger.html
 			print('[info] Sensor: Geiger-Müller tube SBM 20-1')
@@ -111,9 +139,9 @@ class RadexReader():
 			print('[warn] For now, not tested with measured values greater than 0.25 µSv/h.')
 			print()
 		elif self.com == 'RD1212v1':
-			print('Manufacturer  ' + hex(self.usb.idVendor).ljust(7, ' ')  + ' ' + usb.util.get_string(self.usb, self.usb.iManufacturer))
-			print('Product       ' + hex(self.usb.idProduct).ljust(7, ' ') + ' ' + usb.util.get_string(self.usb, self.usb.iProduct))
-			print('ComPort       ' + self.serial.port)
+			print(' manufacturer  ' + hex(self.usb.idVendor).ljust(7, ' ')  + ' ' + usb.util.get_string(self.usb, self.usb.iManufacturer))
+			print(' product       ' + hex(self.usb.idProduct).ljust(7, ' ') + ' ' + usb.util.get_string(self.usb, self.usb.iProduct))
+			print(' comport       ' + self.serial.port)
 			print()
 			# source?
 			print('[info] Sensor: Geiger-Müller tube SBM 20-1')
@@ -127,12 +155,12 @@ class RadexReader():
 			print()
 		elif self.com == 'ONEv1':
 			if sys.platform != 'win32' and sys.platform != 'cygwin':
-				print('Manufacturer  ' + hex(self.usb.idVendor).ljust(7, ' ')  + ' ' + usb.util.get_string(self.usb, self.usb.iManufacturer))
-				print('Product       ' + hex(self.usb.idProduct).ljust(7, ' ') + ' ' + usb.util.get_string(self.usb, self.usb.iProduct))
+				print(' manufacturer  ' + hex(self.usb.idVendor).ljust(7, ' ')  + ' ' + usb.util.get_string(self.usb, self.usb.iManufacturer))
+				print(' product       ' + hex(self.usb.idProduct).ljust(7, ' ') + ' ' + usb.util.get_string(self.usb, self.usb.iProduct))
 			else:
-				print('Manufacturer  -x----  QUARTA-RAD')
-				print('Product       -x----  RADEX ONE')
-			print('ComPort       ' + self.serial.port)
+				print(' manufacturer  -x----  QUARTA-RAD')
+				print(' product       -x----  RADEX ONE')
+			print(' comport       ' + self.serial.port)
 			print()
 			# source?
 			print('[info] Sensor: Geiger-Müller tube SBM 20-1')

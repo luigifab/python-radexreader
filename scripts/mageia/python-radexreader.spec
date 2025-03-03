@@ -18,7 +18,7 @@ Pour éviter un Access denied (insufficient permissions), n'oubliez pas
 de débrancher l'appareil après l'installation.}
 
 Name:          python-radexreader
-Version:       1.2.4
+Version:       1.2.5
 Release:       %mkrel 1
 Summary:       %{common_summary_en}
 Summary(fr):   %{common_summary_fr}
@@ -51,7 +51,7 @@ Requires:      python3dist(pyusb)
 
 %prep
 %setup -q -n python-radexreader-%{version}
-sed -i 's/python3-radexreader /python3-radexreader-rpm /g' src/radexreader.py
+sed -i 's/radexreader-local /python3-radexreader-rpm /g' src/radexreader-cli.py
 sed -i 's/\#\!\/usr\/bin\/python3/\#/g' src/radexreader/__init__.py
 
 %build
@@ -61,10 +61,10 @@ cd src
 %install
 cd src
 %py3_install
-install -Dpm 755 radexreader.py %{buildroot}%{_bindir}/radexreader
-install -Dpm 644 ../debian/radexreader.1 %{buildroot}%{_mandir}/man1/radexreader.1
-install -Dpm 644 ../debian/radexreader.fr.1 %{buildroot}%{_mandir}/fr/man1/radexreader.1
-install -Dpm 644 ../debian/udev %{buildroot}/lib/udev/rules.d/60-%{name}.rules
+install -Dpm 755 radexreader-cli.py %{buildroot}%{_bindir}/radexreader
+install -Dpm 644 ../data/radexreader.1 %{buildroot}%{_mandir}/man1/radexreader.1
+install -Dpm 644 ../data/radexreader.fr.1 %{buildroot}%{_mandir}/fr/man1/radexreader.1
+install -Dpm 644 ../scripts/debian/python3-radexreader.udev %{buildroot}/lib/udev/rules.d/60-%{name}.rules
 
 %files -n python3-radexreader
 %license LICENSE
@@ -78,5 +78,5 @@ install -Dpm 644 ../debian/udev %{buildroot}/lib/udev/rules.d/60-%{name}.rules
 
 
 %changelog
-* Fri Feb 02 2024 Fabrice Creuzot <code@luigifab.fr> - 1.2.4-1
-- Initial Mageia package release (Closes: mbz#...)
+* Mon Mar 03 2025 Fabrice Creuzot <code@luigifab.fr> - 1.2.5-1.mga9
+- Initial Mageia package release (Closes: mbz#32828)

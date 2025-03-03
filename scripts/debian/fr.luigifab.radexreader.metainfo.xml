@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component>
-	<id>python3-radexreader</id>
+	<id>fr.luigifab.radexreader</id>
 	<name>python3-radexreader</name>
-	<metadata_license>GPL-2+</metadata_license>
+	<project_license>GPL-2.0-or-later</project_license>
+	<metadata_license>MIT</metadata_license>
 	<summary>Reader for the RADEX RD1212 and ONE Geiger counters</summary>
 	<description>
 		<p>
@@ -10,6 +11,7 @@
 			It allow to read and clear stored data via USB.
 		</p>
 	</description>
+	<url type="homepage">https://github.com/luigifab/python-radexreader</url>
 	<provides>
 		<!-- RD1212v2 -->
 		<modalias>usb:v03EBp5603d*</modalias>

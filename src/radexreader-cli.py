@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 # -*- coding: utf8 -*-
 # Created L/19/10/2020
-# Updated D/08/10/2023
+# Updated L/12/02/2024
 #
-# Copyright 2020-2024 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+# Copyright 2020-2025 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
 # https://github.com/luigifab/python-radexreader
 #
 # This program is free software, you can redistribute it or modify
@@ -16,10 +16,10 @@
 # merchantability or fitness for a particular purpose. See the
 # GNU General Public License (GPL) for more details.
 
-import datetime
 from platform import python_version
 import sys
 import time
+import datetime
 import usb
 import serial
 
@@ -30,22 +30,18 @@ except AttributeError:
 
 # https://stackoverflow.com/a/62804772/2980105
 # prevent auto import for "import radexreader" when filename is "radexreader.py"
-sys.path = sys.path[1:]
-
-# python3 .../src/radexreader.py when radexreader is installed or not
-if ".py" in sys.argv[0]:
+if "radexreader.py" in sys.argv[0]:
+	sys.path = sys.path[1:]
+# python3 .../src/radexreader*py use local version when radexreader is not installed from package
+elif ".py" in sys.argv[0]:
 	import os
 	sys.path.insert(0, os.path.abspath(sys.argv[0]).replace('radexreader.py', ''))
-	import radexreader
-	msg = 'Information   radexreader ' + radexreader.__version__
-	msg += ' with python ' + python_version() + ' + pyusb ' + usb.__version__ + ' + pyserial ' + serial.__version__
-# standard command radexreader
-else:
-	import radexreader
-	msg = 'Information   python3-radexreader ' + radexreader.__version__
-	msg += ' with python ' + python_version() + ' + pyusb ' + usb.__version__ + ' + pyserial ' + serial.__version__
+
+import radexreader
 
 if len(sys.argv) > 1:
+
+	msg = '\n radexreader-local ' + radexreader.__version__ + ' − python ' + python_version() + ', pyusb ' + usb.__version__ + ', pyserial ' + serial.__version__
 
 	if sys.argv[1] == 'erase':
 		print(msg)

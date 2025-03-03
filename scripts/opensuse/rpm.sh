@@ -1,9 +1,9 @@
 #!/bin/bash
-# openSUSE: sudo zypper install rpmdevtools rpmlint rpm-build python3-devel aspell-fr
+# openSUSE: sudo zypper install rpmdevtools rpm-build python3-devel aspell-fr
 
 
 cd "$(dirname "$0")"
-version="1.2.4"
+version="1.2.5"
 
 
 mkdir -p builder ~/rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
@@ -16,8 +16,8 @@ if [ true ]; then
 else
 	temp=python-radexreader-$version
 	mkdir /tmp/$temp
-	cp -r ../* /tmp/$temp/
-	rm -rf /tmp/$temp/*/builder/ /tmp/$temp/radexreader/__pycache__/
+	cp -r ../../* /tmp/$temp/
+	rm -rf /tmp/$temp/scripts/*/builder/ /tmp/$temp/radexreader/__pycache__/
 
 	mv /tmp/$temp builder/
 	cp /usr/share/licenses/*-firmware/GPL-2 builder/$temp/LICENSE # * = kernel

@@ -1,2 +1,0 @@
-#!/usr/bin/dh-exec
-src/radexreader.py => usr/bin/radexreader
