@@ -281,7 +281,7 @@ class RadexReader():
 
 		# Check if the returned report has the expected length
 		if not hexa or len(hexa) < 31:
-			print("Warning: Incomplete report received. Expected length:", expected_length, "but got", len(hexa))
+			print("Warning: Incomplete report received. Expected length: 31 but got", len(hexa))
 			return {}
 		
 		# measure   = 0.15 µSv/h = 15 / 0.15 µSv accumulated = 15 / 15 CPM = 15
