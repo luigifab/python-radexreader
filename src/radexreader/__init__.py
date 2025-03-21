@@ -279,6 +279,11 @@ class RadexReader():
 		self.hid_set_report((0x7b, 0xff, 0x20, 0, 0x06, 0, self.keyA, self.keyB, 0, 0, self.keyC, self.keyD, 0, 0x08, 0x0c, 0, 0xf3, 0xf7))
 		hexa = self.hid_get_report()
 
+		# Check if the returned report has the expected length
+		if not hexa or len(hexa) < 31:
+			print("Warning: Incomplete report received. Expected length: 31 but got", len(hexa))
+			return {}
+		
 		# measure   = 0.15 µSv/h = 15 / 0.15 µSv accumulated = 15 / 15 CPM = 15
 		measure     = (hexa[20] + hexa[21] * 256 + hexa[22] * 256 * 256) / 100
 		measure_acc = (hexa[24] + hexa[25] * 256 + hexa[26] * 256 * 256) / 100
