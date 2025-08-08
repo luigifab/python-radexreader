@@ -3,7 +3,7 @@
 
 
 cd "$(dirname "$0")"
-version="1.2.5"
+version="1.3.0"
 
 
 mkdir builder
@@ -31,7 +31,7 @@ fi
 
 
 # create packages for Debian and Ubuntu and MX Linux
-for serie in experimental plucky oracular noble jammy focal bionic xenial trusty mx23; do
+for serie in experimental questing plucky oracular noble jammy focal bionic xenial trusty mx23 mx21; do
 
 	printf "\n\n#################################################################### $serie ##\n\n"
 	if [ $serie = "experimental" ]; then
@@ -49,22 +49,24 @@ for serie in experimental plucky oracular noble jammy focal bionic xenial trusty
 
 	dh_make -s -y -f ../python-radexreader-$version.tar.gz -p python-radexreader
 
-	rm -f debian/*/*ex debian/*ex debian/*EX debian/README* debian/*doc*
+	rm -rf debian/*/*ex debian/*ex debian/*EX debian/README* debian/*doc*
 	cp scripts/debian/* debian/
 	rm -f debian/deb.sh
-	mv debian/metadata debian/upstream/metadata
+	mkdir debian/upstream ; mv debian/metadata debian/upstream/metadata
 	chmod +x debian/radexreader*install
 
 
 	if [ $serie = "experimental" ]; then
 		mv debian/control.debian debian/control
 		mv debian/changelog.debian debian/changelog
+		rm -f debian/*.mx debian/*.debian debian/*.ubuntu
 		echo "=========================== buildpackage ($serie) =="
 		dpkg-buildpackage -us -uc
 	else
 		# debhelper: experimental:13 focal/mx19/mx21:12 bionic:9 xenial:9 trusty:9
 		if [ $serie = "unstable" ]; then
 			mv debian/control.debian debian/control
+
 		elif [ $serie = "mx19" ] || [ $serie = "mx21" ]; then
 			mv debian/control.mx debian/control
 			sed -i 's/debhelper-compat (= 13)/debhelper-compat (= 12)/g' debian/control
@@ -73,18 +75,17 @@ for serie in experimental plucky oracular noble jammy focal bionic xenial trusty
 			sed -i 's/debhelper-compat (= 13)/debhelper-compat (= 12)/g' debian/control
 		elif [ $serie = "bionic" ]; then
 			mv debian/control.ubuntu debian/control
-
+			sed -i 's/execute_before_dh_install:/override_dh_update_autotools_config:/g' debian/rules
 			sed -i 's/debhelper-compat (= 13)/debhelper-compat (= 9)/g' debian/control
 		elif [ $serie = "xenial" ]; then
 			mv debian/control.ubuntu debian/control
-
+			sed -i 's/execute_before_dh_install:/override_dh_update_autotools_config:/g' debian/rules
 			sed -i 's/debhelper-compat (= 13)/debhelper (>= 9)/g' debian/control
 			sed -i ':a;N;$!ba;s/Rules-Requires-Root: no\n//g' debian/control
 			echo 9 > debian/compat
 		elif [ $serie = "trusty" ]; then
 			mv debian/control.ubuntu debian/control
-
-
+			sed -i 's/execute_before_dh_install:/override_dh_update_autotools_config:/g' debian/rules
 			sed -i 's/debhelper-compat (= 13)/debhelper (>= 9)/g' debian/control
 			sed -i ':a;N;$!ba;s/Rules-Requires-Root: no\n//g' debian/control
 			echo 9 > debian/compat
@@ -101,25 +102,28 @@ for serie in experimental plucky oracular noble jammy focal bionic xenial trusty
 			sed -i 's/experimental/'$serie'/g' debian/changelog
 			sed -i 's/-1) /-1+'$serie') /' debian/changelog
 		fi
-		rm -f debian/*.mx debian/*.debian
+		rm -f debian/*.mx debian/*.debian debian/*.ubuntu
 		echo "=========================== buildpackage ($serie) =="
 		dpkg-buildpackage -us -uc -ui -d -S
 	fi
-	echo "=========================== debsign ($serie) =="
 	cd ..
 
 	if [ $serie = "experimental" ]; then
-		debsign python-radexreader_$version*.changes
 		echo "=========================== lintian ($serie) =="
-		lintian -EviIL +pedantic *radexreader*$version*.deb
+		lintian -EviIL +pedantic python-radexreader_$version*.changes
+		rm *amd64.changes
 	elif [ $serie = "unstable" ]; then
+		echo "=========================== debsign ($serie) =="
 		debsign python-radexreader*$version-*_source.changes
 	else
+		echo "=========================== debsign ($serie) =="
 		debsign python-radexreader*$version*$serie*source.changes
 	fi
 	cd ..
 done
 
+
 printf "\n\n"
 ls -dlth "$PWD/"builder/*.deb "$PWD/"builder/*.changes
+printf "\n"
 rm -rf builder/*/

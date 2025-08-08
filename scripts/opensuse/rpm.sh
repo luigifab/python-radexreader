@@ -3,14 +3,17 @@
 
 
 cd "$(dirname "$0")"
-version="1.2.5"
+version="1.3.0"
 
 
 mkdir -p builder ~/rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
 find builder/* ! -name "*$version*.rpm" ! -name "*$version*.gz" -exec rm -rf {} + 2>/dev/null
+rm -f ~/rpmbuild/SOURCES/python-radexreader-$version.tar.gz
 
 # copy to a tmp directory
 if [ true ]; then
+	rm python-radexreader.spec
+	wget https://raw.githubusercontent.com/luigifab/python-radexreader/refs/tags/v$version/scripts/opensuse/python-radexreader.spec
 	chmod 644 python-radexreader.spec
 	spectool -g -R python-radexreader.spec
 else

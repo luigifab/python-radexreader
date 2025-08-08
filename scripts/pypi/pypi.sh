@@ -3,7 +3,7 @@
 # Fedora: sudo dnf install python3-devel
 
 cd "$(dirname "$0")"
-version="1.2.5"
+version="1.3.0"
 rm -rf builder/
 
 mkdir builder

@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf8 -*-
 # Created L/19/10/2020
-# Updated L/12/02/2024
+# Updated M/05/08/2025
 #
 # Copyright 2020-2025 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
 # https://github.com/luigifab/python-radexreader
@@ -27,7 +27,7 @@ import usb.backend.libusb1
 import serial
 import serial.tools.list_ports
 
-__version__ = '1.2.5'
+__version__ = '1.3.0'
 
 class RadexReader():
 
@@ -40,14 +40,15 @@ class RadexReader():
 	keyD = None
 
 	def disconnect(self):
+		# is it working?
 		usb.util.dispose_resources(self.usb)
-		com = None
-		usb = None
-		serial = None
-		keyA = None
-		keyB = None
-		keyC = None
-		keyD = None
+		self.com = None
+		self.usb = None
+		self.serial = None
+		self.keyA = None
+		self.keyB = None
+		self.keyC = None
+		self.keyD = None
 
 	def __init__(self):
 
@@ -64,8 +65,7 @@ class RadexReader():
 			for device in devices:
 				self.serial = serial.Serial(port=device.device, baudrate=9600, timeout=0.5)
 				return # device found
-			if self.serial is None:
-				raise ValueError('Error: RADEX ONE (serial) not found')
+			raise ValueError('Error: RADEX ONE (serial) not found')
 
 		# RADEX RD1212 v1
 		# search usb device (10C4/EA60 = Silicon labs USB to UART bridge or CP2102 USB to UART Bridge Controller)
@@ -81,10 +81,9 @@ class RadexReader():
 			for device in devices:
 				self.serial = serial.Serial(port=device.device, baudrate=115200, timeout=0.5)
 				return # device found
-			if self.serial is None:
-				raise ValueError('Error: RADEX RD1212 (serial) not found')
+			raise ValueError('Error: RADEX RD1212 (serial) not found')
 
- 		# RADEX RD1212 v2
+		# RADEX RD1212 v2
 		# search usb device (03EB/5603)
 		self.usb = usb.core.find(idVendor=0x03eb, idProduct=0x5603, backend=backend)
 		if self.usb is not None:
@@ -97,8 +96,7 @@ class RadexReader():
 			return # device found
 
 		# no devices found
-		if self.usb is None:
-			raise ValueError('Error: RADEX RD1212 (usb) and RADEX ONE (usb) not plugged?')
+		raise ValueError('Error: RADEX RD1212 (usb) and RADEX ONE (usb) not plugged?')
 
 	def get_device(self, getusb=False):
 		if not getusb and self.serial is not None:
@@ -116,7 +114,7 @@ class RadexReader():
 				hex(self.usb.idProduct) + ' ' + usb.util.get_string(self.usb, self.usb.iProduct) + ', ' +
 				self.serial.port + ')')
 		elif self.com == 'ONEv1':
-			if sys.platform != 'win32' and sys.platform != 'cygwin':
+			if sys.platform not in ('win32', 'cygwin'):
 				return ('ONEv1 (' +
 					hex(self.usb.idVendor)  + ' ' + usb.util.get_string(self.usb, self.usb.iManufacturer) + ', ' +
 					hex(self.usb.idProduct) + ' ' + usb.util.get_string(self.usb, self.usb.iProduct) + ')')
@@ -208,7 +206,6 @@ class RadexReader():
 		if self.com == 'ONEv1':
 			return self.readOne()
 
-		values = {}
 		# from 0x0 to 0xb3
 		if last and self.com == 'RD1212v2':
 			keys = [0x0]
@@ -219,16 +216,20 @@ class RadexReader():
 
 		# 1 min, 5 min, 10 min, 30 min, 1 hour, 2 hours, 4 hours, 6 hours, 12 hours, 24 hours
 		interval = {0: 1, 1: 5, 2: 10, 3: 30, 4: 60, 5: 120, 6: 240, 7: 360, 8: 720, 9: 1440}
+		values   = {}
 
 		for key in keys:
 			self.hid_set_report((0x12, 0x12, 0x01, 0x02, key, 0, 0, 0, 0, 0, 0, 0, 0x3c, 0x84))
 			hexa = self.hid_get_report()
-			if hexa != b'' and hexa[0] != 0:
+			if hexa != b'' and len(hexa) >= 9 and hexa[0] != 0:
 				# timestamp = 01/01/2016 00:00:44 = 1451606444
 				# timestamp = 01/01/2016 00:00:44 = 172 + 193 (×256) + 133 (×256×256) + 86 (×256×256×256)
 				timestamp   = (hexa[2] + hexa[3] * 256 + hexa[4] * 256 * 256 + hexa[5] * 256 * 256 * 256)
 				# measure   = 0.15 µSv/h = 15
 				measure     = (hexa[6] + hexa[7] * 256) / 100
+				# unlikely result
+				if measure == 0:
+					continue
 				# uncertainty of the result
 				percent     = 15 + 6 / measure
 				measure_min = measure * (1 - percent / 100)
@@ -247,9 +248,13 @@ class RadexReader():
 					'interval': interval[hexa[8]]
 				}
 
+		if len(values) < 1:
+			return {}
+
 		# most recent measure
 		if last:
-			return dict({ max(values): values[max(values)] }) if len(values) > 0 else values
+			maxi = max(values)
+			return dict({ maxi: values[maxi] })
 
 		# sort measures by date
 		return dict(sorted(values.items(), key=operator.itemgetter(0)))
@@ -257,13 +262,15 @@ class RadexReader():
 	def readOne(self):
 
 		if self.keyA is None:
-			self.keyA = 0x04 - 0x04
+			self.keyA = 0x04 - 0x04  # => 0x00
 			self.keyB = 0x00
-			self.keyC = 0x5a + 0x04
+			self.keyC = 0x5a + 0x04  # => 0x5e
 			self.keyD = 0x00
 
 		self.keyA += 0x04
 		self.keyC -= 0x04
+
+		# @todo it's wrong
 		if self.keyA > 0xff:
 			self.keyA -= 0xfe
 			self.keyB += 0x01
@@ -278,11 +285,14 @@ class RadexReader():
 
 		self.hid_set_report((0x7b, 0xff, 0x20, 0, 0x06, 0, self.keyA, self.keyB, 0, 0, self.keyC, self.keyD, 0, 0x08, 0x0c, 0, 0xf3, 0xf7))
 		hexa = self.hid_get_report()
-
+		#if hexa and len(hexa) >= 31:
 		# measure   = 0.15 µSv/h = 15 / 0.15 µSv accumulated = 15 / 15 CPM = 15
 		measure     = (hexa[20] + hexa[21] * 256 + hexa[22] * 256 * 256) / 100
 		measure_acc = (hexa[24] + hexa[25] * 256 + hexa[26] * 256 * 256) / 100
 		measure_cpm =  hexa[28] + hexa[29] * 256 + hexa[30] * 256 * 256
+		# unlikely result
+		if measure == 0:
+			return {}
 		# uncertainty of the result
 		percent     = 15 + 6 / measure
 		measure_min = measure * (1 - percent / 100)
@@ -291,17 +301,19 @@ class RadexReader():
 			measure_min = 0
 		if percent > 99.9:
 			percent = 99.9
-
+		# most recent measure
 		timestamp = int(time.time())
 		return { timestamp: {
-			'pct': percent,
-			'min': measure_min,
-			'val': measure,
-			'max': measure_max,
-			'acc': measure_acc,
-			'cpm': measure_cpm,
+			'pct':  percent,
+			'min':  measure_min,
+			'val':  measure,
+			'max':  measure_max,
+			'acc':  measure_acc,
+			'cpm':  measure_cpm,
 			'time': timestamp
 		} }
+
+		#return {}
 
 	def erase(self):
 		if self.com == 'RD1212v2':

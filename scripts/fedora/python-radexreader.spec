@@ -18,13 +18,14 @@ Pour éviter un Access denied (insufficient permissions), n'oubliez pas
 de débrancher l'appareil après l'installation.}
 
 Name:          python-radexreader
-Version:       1.2.5
+Version:       1.3.0
 Release:       1%{?dist}
 Summary:       %{common_summary_en}
 Summary(fr):   %{common_summary_fr}
 License:       GPL-2.0-or-later
 URL:           https://github.com/luigifab/python-radexreader
 Source0:       %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
+
 
 BuildArch:     noarch
 BuildRequires: aspell-fr
@@ -34,12 +35,11 @@ BuildRequires: aspell-fr
 
 
 %package -n python3-radexreader
-%py_provides python3-radexreader
+%py_provides   python3-radexreader
 Summary:       %{common_summary_en}
 Summary(fr):   %{common_summary_fr}
 
 BuildRequires: python3-devel
-BuildRequires: python3-setuptools
 Requires:      python3
 Requires:      %{py3_dist pyserial}
 Requires:      %{py3_dist pyusb}
@@ -53,14 +53,19 @@ Requires:      %{py3_dist pyusb}
 sed -i 's/radexreader-local /python3-radexreader-rpm /g' src/radexreader-cli.py
 sed -i 's/\#\!\/usr\/bin\/python3/\#/g' src/radexreader/__init__.py
 
+%generate_buildrequires
+cd src
+%pyproject_buildrequires
+
 %build
 cd src
-%py3_build
+%pyproject_wheel
 
 %install
 cd src
-%py3_install
+%pyproject_install
 install -Dpm 755 radexreader-cli.py %{buildroot}%{_bindir}/radexreader
+install -Dpm 644 ../data/radexreader.bash %{buildroot}%{bash_completions_dir}/radexreader
 install -Dpm 644 ../data/radexreader.1 %{buildroot}%{_mandir}/man1/radexreader.1
 install -Dpm 644 ../data/radexreader.fr.1 %{buildroot}%{_mandir}/fr/man1/radexreader.1
 install -Dpm 644 ../scripts/debian/python3-radexreader.udev %{buildroot}/lib/udev/rules.d/60-%{name}.rules
@@ -68,15 +73,19 @@ install -Dpm 644 ../scripts/debian/python3-radexreader.udev %{buildroot}/lib/ude
 %files -n python3-radexreader
 %license LICENSE
 %doc README.md
-%ghost %{python3_sitelib}/radexreader*egg-info/
+%{python3_sitelib}/radexreader*dist-info/
 %{python3_sitelib}/radexreader/
 %{_bindir}/radexreader
+%{bash_completions_dir}/radexreader
 %{_mandir}/man1/radexreader.1*
 %{_mandir}/*/man1/radexreader.1*
 /lib/udev/rules.d/60-%{name}.rules
 
 
 %changelog
+* Fri Aug 08 2025 Fabrice Creuzot <code@luigifab.fr> - 1.3.0-1
+- New upstream release
+
 * Mon Mar 03 2025 Fabrice Creuzot <code@luigifab.fr> - 1.2.5-1
 - New upstream release
 

@@ -1,19 +1,19 @@
 #!/bin/bash
-# Mageia: sudo urpmi --no-recommends rpmdevtools rpm-sign python3-devel pyproject-rpm-macros aspell-fr enchant2-aspell
+
 
 
 cd "$(dirname "$0")"
 version="1.3.0"
 
 
-mkdir -p builder ~/rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
+mkdir -p builder builder/{BUILD,RPMS,SRPMS}
 find builder/* ! -name "*$version*.rpm" ! -name "*$version*.gz" -exec rm -rf {} + 2>/dev/null
-rm -f ~/rpmbuild/SOURCES/python-radexreader-$version.tar.gz
+
 
 # copy to a tmp directory
 if [ true ]; then
 	rm python-radexreader.spec
-	wget https://raw.githubusercontent.com/luigifab/python-radexreader/refs/tags/v$version/scripts/mageia/python-radexreader.spec
+	wget https://raw.githubusercontent.com/luigifab/python-radexreader/refs/tags/v$version/scripts/openmandriva/python-radexreader.spec
 	chmod 644 python-radexreader.spec
 	spectool -g -R python-radexreader.spec
 else
@@ -29,23 +29,26 @@ else
 	tar czf $temp.tar.gz $temp
 	cd ..
 
-	cp builder/$temp.tar.gz ~/rpmbuild/SOURCES/python-radexreader-$version.tar.gz
+	cp builder/$temp.tar.gz python-radexreader-$version.tar.gz
 	chmod 644 python-radexreader.spec
 fi
 
 # create package (rpm sign https://access.redhat.com/articles/3359321)
-rpmbuild -ba python-radexreader.spec
-rpm --addsign ~/rpmbuild/RPMS/*/python*radexreader*.rpm
-rpm --addsign ~/rpmbuild/SRPMS/python*radexreader*.rpm
-mv ~/rpmbuild/RPMS/*/python*radexreader*.rpm builder/
-mv ~/rpmbuild/SRPMS/python*radexreader*.rpm builder/
+cp -a python-radexreader-$version.tar.gz python-radexreader.spec builder/
+cd builder/
+abb builda
+rpm --addsign RPMS/*/python*radexreader*.rpm
+rpm --addsign SRPMS/python*radexreader*.rpm
+mv RPMS/*/python*radexreader*.rpm .
+mv SRPMS/python*radexreader*.rpm .
 echo "==========================="
-rpm --checksig builder/*.rpm
+rpm --checksig *.rpm
 echo "==========================="
-rpmlint python-radexreader.spec builder/*.rpm
+rpmlint python-radexreader.spec *.rpm
 echo "==========================="
-ls -dlth "$PWD/"builder/*.rpm
+ls -dlth "$PWD/"*.rpm
 echo "==========================="
+cd ..
 
 # cleanup
-rm -rf builder/*/
+rm -rf builder/*/ builder/*buildlog builder/*spec python-radexreader-$version.tar.gz

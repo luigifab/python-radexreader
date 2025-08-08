@@ -1,5 +1,5 @@
-python-radexreader (1.2.5-1) experimental; urgency=low
+python-radexreader (1.3.0-1) experimental; urgency=low
 
   * Initial Debian package release (Closes: #973447)
 
- -- Fabrice Creuzot <code@luigifab.fr>  Mon, 03 Mar 2025 20:00:00 +0000
+ -- Fabrice Creuzot <code@luigifab.fr>  Fri, 08 Aug 2025 20:00:00 +0000

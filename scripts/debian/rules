@@ -3,7 +3,7 @@
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 
 %:
-	dh $@ --with python3
+	dh $@ --with bash-completion --with python3
 
-override_dh_update_autotools_config:
+execute_before_dh_install:
 	sed -i 's/radexreader-local /python3-radexreader-deb /g' src/radexreader-cli.py
