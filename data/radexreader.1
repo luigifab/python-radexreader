@@ -1,4 +1,4 @@
-.Dd 01/01/22
+.Dd 2026-10-04
 .Dt RADEXREADER 1
 .Os Linux
 .Sh NAME
@@ -13,9 +13,10 @@
 .Op Ar all
 .Op Ar jsonall
 .Op Ar erase
+.Op Ar interactive
 .Sh DESCRIPTION
-The RadexReader is an user-space driver for the RADEX RD1212 and
-the RADEX ONE Geiger counters. It allow to read and clear stored
+The RadexReader is a user-space driver for the RADEX RD1212 and
+the RADEX ONE Geiger counters. It allows you to read and clear stored
 data via USB.
 .Bl -tag -width "jsontail"
 .It Ar tail
@@ -29,14 +30,16 @@ Read and display in json format of the measurement.
 .It Ar all
 Read and display all measurements stored (RD1212 only).
 .It Ar jsonall
-Read and display is json format all measurements stored (RD1212 only).
+Read and display in json format all measurements stored (RD1212 only).
 .It Ar erase
 Remove stored measurements (RD1212 only).
+.It Ar interactive
+Display home screen with menu.
 .El
 .Pp
 The values shown are only approximations. The actual value can only be measured with suitable professional device.
-.Sh OUTPUT EXAMPLES
-.Bl -tag -width
+.Sh EXAMPLES
+.Bl -tag -width Ds
 .It Ar tail last all
 .nf
 .Rs

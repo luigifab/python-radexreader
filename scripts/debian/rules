@@ -1,9 +1,11 @@
 #!/usr/bin/make -f
 
-export DEB_BUILD_MAINT_OPTIONS = hardening=+all
-
 %:
 	dh $@ --with bash-completion --with python3
 
 execute_before_dh_install:
 	sed -i 's/radexreader-local /python3-radexreader-deb /g' src/radexreader-cli.py
+
+override_dh_clean:
+	sed -i 's/python3-radexreader-deb /radexreader-local /g' src/radexreader-cli.py
+	dh_clean

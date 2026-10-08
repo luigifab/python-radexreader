@@ -2,8 +2,8 @@
 %global common_summary_fr Lecteur pour les compteurs Geiger RADEX RD1212 et ONE
 
 %global common_description_en %{expand:
-The RadexReader is an user-space driver for the RADEX RD1212 and
-the RADEX ONE Geiger counters. It allow to read and clear stored
+The RadexReader is a user-space driver for the RADEX RD1212 and
+the RADEX ONE Geiger counters. It allows you to read and clear stored
 data via USB.
 
 To avoid Access denied (insufficient permissions), don't forget
@@ -18,7 +18,7 @@ Pour éviter un Access denied (insufficient permissions), n'oubliez pas
 de débrancher l'appareil après l'installation.}
 
 Name:          python-radexreader
-Version:       1.3.0
+Version:       1.4.0
 Release:       1%{?dist}
 Summary:       %{common_summary_en}
 Summary(fr):   %{common_summary_fr}
@@ -29,6 +29,7 @@ Source0:       %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 
 BuildArch:     noarch
 BuildRequires: aspell-fr
+BuildRequires: desktop-file-utils
 
 %description %{common_description_en}
 %description -l fr %{common_description_fr}
@@ -62,13 +63,16 @@ cd src
 %pyproject_wheel
 
 %install
+install -dm 755 %{buildroot}%{_datadir}/applications/
+desktop-file-install --dir=%{buildroot}%{_datadir}/applications/ data/radexreader.desktop
+install -Dpm 644 data/fr.luigifab.radexreader.metainfo.xml %{buildroot}%{_metainfodir}/fr.luigifab.radexreader.metainfo.xml
 cd src
 %pyproject_install
 install -Dpm 755 radexreader-cli.py %{buildroot}%{_bindir}/radexreader
 install -Dpm 644 ../data/radexreader.bash %{buildroot}%{bash_completions_dir}/radexreader
 install -Dpm 644 ../data/radexreader.1 %{buildroot}%{_mandir}/man1/radexreader.1
 install -Dpm 644 ../data/radexreader.fr.1 %{buildroot}%{_mandir}/fr/man1/radexreader.1
-install -Dpm 644 ../scripts/debian/python3-radexreader.udev %{buildroot}/lib/udev/rules.d/60-%{name}.rules
+install -Dpm 644 ../scripts/debian/python3-radexreader.udev %{buildroot}%{_udevrulesdir}/60-%{name}.rules
 
 %files -n python3-radexreader
 %license LICENSE
@@ -76,13 +80,18 @@ install -Dpm 644 ../scripts/debian/python3-radexreader.udev %{buildroot}/lib/ude
 %{python3_sitelib}/radexreader*dist-info/
 %{python3_sitelib}/radexreader/
 %{_bindir}/radexreader
+%{_datadir}/applications/radexreader.desktop
 %{bash_completions_dir}/radexreader
 %{_mandir}/man1/radexreader.1*
 %{_mandir}/*/man1/radexreader.1*
-/lib/udev/rules.d/60-%{name}.rules
+%{_metainfodir}/fr.luigifab.radexreader.metainfo.xml
+%{_udevrulesdir}/60-%{name}.rules
 
 
 %changelog
+* Fri Jan 01 2027 Fabrice Creuzot <code@luigifab.fr> - 1.4.0-1
+- New upstream release
+
 * Fri Aug 08 2025 Fabrice Creuzot <code@luigifab.fr> - 1.3.0-1
 - New upstream release
 
@@ -106,3 +115,6 @@ install -Dpm 644 ../scripts/debian/python3-radexreader.udev %{buildroot}/lib/ude
 
 * Wed May 05 2021 Fabrice Creuzot <code@luigifab.fr> - 1.2.0-1
 - Initial Fedora package release (Closes: rhbz#1896742)
+
+
+

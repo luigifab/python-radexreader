@@ -1,4 +1,4 @@
-.Dd 01/01/22
+.Dd 2026-10-04
 .Dt RADEXREADER 1
 .Os Linux
 .Sh NAME
@@ -13,6 +13,7 @@
 .Op Ar all
 .Op Ar jsonall
 .Op Ar erase
+.Op Ar interactive
 .Sh DESCRIPTION
 Le RadexReader est un pilote en espace utilisateur pour les compteurs
 Geiger RADEX RD1212 et RADEX ONE. Il permet de lire et d'effacer les
@@ -32,11 +33,13 @@ Lecture et affichage de toutes les mesures enregistrées (RD1212 uniquement).
 Lecture et affichage au format json de toutes les mesures enregistrées (RD1212 uniquement).
 .It Ar erase
 Supprime les mesures enregistrées (RD1212 uniquement).
+.It Ar interactive
+Affiche un écran d'accueil avec menu.
 .El
 .Pp
 Les valeurs indiquées ne sont que des approximations. La valeur réelle ne peut être mesurée qu'avec un appareil professionnel approprié.
-.Sh OUTPUT EXAMPLES
-.Bl -tag -width
+.Sh EXEMPLES
+.Bl -tag -width Ds
 .It Ar tail last all
 .nf
 .Rs

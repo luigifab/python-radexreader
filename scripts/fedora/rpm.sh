@@ -1,9 +1,9 @@
 #!/bin/bash
-# Fedora: sudo dnf install rpmdevtools rpm-sign python3-devel aspell-fr enchant2-aspell
+# Fedora: sudo dnf install rpmdevtools rpm-sign python3-devel desktop-file-utils aspell-fr enchant2-aspell
 # Fedora: configure: error: C compiler cannot create executables? remove and reinstall glibc-devel gcc
 
-cd "$(dirname "$0")"
-version="1.3.0"
+cd "$(dirname "$0")" || exit 1
+version="1.4.0"
 
 
 mkdir -p builder ~/rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
@@ -20,7 +20,7 @@ else
 	temp=python-radexreader-$version
 	mkdir /tmp/$temp
 	cp -r ../../* /tmp/$temp/
-	rm -rf /tmp/$temp/scripts/*/builder/ /tmp/$temp/radexreader/__pycache__/
+	rm -rf /tmp/$temp/scripts/*/builder/ /tmp/$temp/src/radexreader/__pycache__/
 
 	mv /tmp/$temp builder/
 	cp /usr/share/common-licenses/GPL*2 builder/$temp/LICENSE
@@ -34,18 +34,17 @@ else
 fi
 
 # create package (rpm sign https://access.redhat.com/articles/3359321)
-rpmbuild -ba python-radexreader.spec
+rpmbuild --quiet -ba python-radexreader.spec
+echo "=================================== rpm-sign =="
 rpm --addsign ~/rpmbuild/RPMS/*/python*radexreader*.rpm
 rpm --addsign ~/rpmbuild/SRPMS/python*radexreader*.rpm
 mv ~/rpmbuild/RPMS/*/python*radexreader*.rpm builder/
 mv ~/rpmbuild/SRPMS/python*radexreader*.rpm builder/
-echo "==========================="
 rpm --checksig builder/*.rpm
-echo "==========================="
-rpmlint python-radexreader.spec builder/*.rpm
-echo "==========================="
-ls -dlth "$PWD/"builder/*.rpm
-echo "==========================="
+echo "=================================== rpm-lint =="
+rpmlint python-radexreader.spec builder/*.rpm | grep radexreader
+echo "==============================================="
+ls -dlth "$PWD"/builder/*.rpm
 
 # cleanup
 rm -rf builder/*/

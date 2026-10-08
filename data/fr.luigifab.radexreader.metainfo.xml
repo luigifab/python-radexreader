@@ -7,10 +7,11 @@
 	<summary>Reader for the RADEX RD1212 and ONE Geiger counters</summary>
 	<description>
 		<p>
-			The RadexReader is an user-space driver for the RADEX RD1212 and the RADEX ONE Geiger counters.
-			It allow to read and clear stored data via USB.
+			The RadexReader is a user-space driver for the RADEX RD1212 and the RADEX ONE Geiger counters.
+			It allows you to read and clear stored data via USB.
 		</p>
 	</description>
+	<content_rating type="oars-1.1" />
 	<url type="homepage">https://github.com/luigifab/python-radexreader</url>
 	<provides>
 		<!-- RD1212v2 -->

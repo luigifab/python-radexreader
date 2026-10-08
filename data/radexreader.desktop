@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=RadexReader
+Comment=Reader for the RADEX RD1212 and ONE Geiger counters.
+Comment[fr]=Lecteur pour les compteurs Geiger RADEX RD1212 et ONE.
+Exec=radexreader interactive
+Icon=generic
+Terminal=true
+Type=Application
+Keywords=geiger;
+Categories=Development;

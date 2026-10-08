@@ -1,2 +1,3 @@
 #!/usr/bin/dh-exec
-src/radexreader-cli.py => usr/bin/radexreader
+src/radexreader-cli.py   => usr/bin/radexreader
+data/radexreader.desktop => usr/share/applications/radexreader.desktop

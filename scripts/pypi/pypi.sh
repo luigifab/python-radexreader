@@ -2,12 +2,11 @@
 # Debian: sudo apt install python3-pip python3-setuptools
 # Fedora: sudo dnf install python3-devel
 
-cd "$(dirname "$0")"
-version="1.3.0"
-rm -rf builder/
+cd "$(dirname "$0")" || exit 1
+version="1.4.0"
 
-mkdir builder
-mkdir builder/radexreader-${version}
+rm -rf builder/
+mkdir -p builder/radexreader-${version}
 
 # copy to a tmp directory
 cp -r ../../src/*  builder/radexreader-${version}/

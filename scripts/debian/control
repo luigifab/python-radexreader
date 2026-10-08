@@ -2,9 +2,9 @@ Source: python-radexreader
 Section: python
 Priority: optional
 Maintainer: Fabrice Creuzot <code@luigifab.fr>
-Build-Depends: debhelper-compat (= 13), bash-completion, python3-all, dh-python, dh-exec
+Build-Depends: debhelper-compat (= 14), bash-completion, python3-all, dh-python, dh-exec
 Rules-Requires-Root: no
-Standards-Version: 4.7.2
+Standards-Version: 4.7.4
 Homepage: https://github.com/luigifab/python-radexreader
 Vcs-Browser: https://github.com/luigifab/python-radexreader
 Vcs-Git: https://github.com/luigifab/python-radexreader.git
@@ -13,8 +13,8 @@ Package: python3-radexreader
 Architecture: all
 Depends: ${misc:Depends}, ${python3:Depends}, python3-serial, python3-usb
 Description: reader for the RADEX RD1212 and ONE Geiger counters (Python module)
- The RadexReader is an user-space driver for the RADEX RD1212 and
- the RADEX ONE Geiger counters. It allow to read and clear stored
+ The RadexReader is a user-space driver for the RADEX RD1212 and
+ the RADEX ONE Geiger counters. It allows you to read and clear stored
  data via USB.
  .
  To avoid Access denied (insufficient permissions), don't forget
@@ -23,10 +23,10 @@ Description: reader for the RADEX RD1212 and ONE Geiger counters (Python module)
 Package: radexreader
 Architecture: all
 Section: science
-Depends: ${misc:Depends}, ${python3:Depends}, python3-radexreader
+Depends: ${misc:Depends}, ${python3:Depends}, python3-radexreader (= ${binary:Version})
 Description: reader for the RADEX RD1212 and ONE Geiger counters (CLI)
- The RadexReader is an user-space driver for the RADEX RD1212 and
- the RADEX ONE Geiger counters. It allow to read and clear stored
+ The RadexReader is a user-space driver for the RADEX RD1212 and
+ the RADEX ONE Geiger counters. It allows you to read and clear stored
  data via USB.
  .
  To avoid Access denied (insufficient permissions), don't forget

@@ -1,3 +1,9 @@
+python-radexreader (1.4.0-1) mx; urgency=low
+
+  * New upstream release
+
+ -- Fabrice Creuzot <code@luigifab.fr>  Fri, 01 Jan 2027 20:00:00 +0000
+
 python-radexreader (1.3.0-1) mx; urgency=low
 
   * Initial MX Linux package release

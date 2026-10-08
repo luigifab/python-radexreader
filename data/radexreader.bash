@@ -5,10 +5,10 @@ _radexreader_complete() {
 	COMPREPLY=()
 	cur="${COMP_WORDS[COMP_CWORD]}"
 	prev="${COMP_WORDS[COMP_CWORD-1]}"
-	opts="erase tail jsontail last jsonlast all jsonall"
+	opts="tail jsontail last jsonlast all jsonall erase interactive"
 
 	case "$prev" in
-		erase|tail|jsontail|last|jsonlast|all|jsonall)
+		tail|jsontail|last|jsonlast|all|jsonall|erase|interactive)
 			return 1 # stop
 			;;
 	esac

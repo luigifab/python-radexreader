@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 # -*- coding: utf8 -*-
 # Created L/19/10/2020
-# Updated M/05/08/2025
+# Updated D/06/09/2026
 #
-# Copyright 2020-2025 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+# Copyright 2020-2027 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
 # https://github.com/luigifab/python-radexreader
 #
 # This program is free software, you can redistribute it or modify
@@ -27,7 +27,7 @@ import usb.backend.libusb1
 import serial
 import serial.tools.list_ports
 
-__version__ = '1.3.0'
+__version__ = '1.4.0'
 
 class RadexReader():
 
