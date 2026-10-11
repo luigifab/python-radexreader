@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf8 -*-
 # Created L/19/10/2020
-# Updated D/04/10/2026
+# Updated J/08/10/2026
 #
 # Copyright 2020-2027 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
 # https://github.com/luigifab/python-radexreader
@@ -137,7 +137,7 @@ if len(sys.argv) > 1:
 			read_tail(reader)
 		except KeyboardInterrupt:
 			print("")
-		exit(0)
+		sys.exit(0)
 
 	if sys.argv[1] == 'jsontail' or sys.argv[1] == 'tailjson':
 		import json
@@ -146,37 +146,37 @@ if len(sys.argv) > 1:
 			read_jsontail(reader)
 		except KeyboardInterrupt:
 			print("")
-		exit(0)
+		sys.exit(0)
 
 	if sys.argv[1] == 'last' or sys.argv[1] == 'readlast':
 		print(msg)
 		reader = radexreader.RadexReader()
 		read_last(reader)
-		exit(0)
+		sys.exit(0)
 
 	if sys.argv[1] == 'jsonlast':
 		import json
 		reader = radexreader.RadexReader()
 		read_jsonlast(reader)
-		exit(0)
+		sys.exit(0)
 
 	if sys.argv[1] == 'all' or sys.argv[1] == 'readall':
 		print(msg)
 		reader = radexreader.RadexReader()
 		read_all(reader)
-		exit(0)
+		sys.exit(0)
 
 	if sys.argv[1] == 'jsonall':
 		import json
 		reader = radexreader.RadexReader()
 		read_jsonall(reader)
-		exit(0)
+		sys.exit(0)
 
 	if sys.argv[1] == 'erase':
 		print(msg)
 		reader = radexreader.RadexReader()
 		write_erase(reader)
-		exit(0)
+		sys.exit(0)
 
 	if sys.argv[1] == 'interactive':
 		print(msg)
@@ -218,7 +218,7 @@ if len(sys.argv) > 1:
 			except (KeyboardInterrupt, EOFError):
 				print("")
 
-		exit(0)
+		sys.exit(0)
 
 print('Usage: radexreader tail|jsontail|last|jsonlast|all|jsonall|erase|interactive')
-exit(-1)
+sys.exit(1)

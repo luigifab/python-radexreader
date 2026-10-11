@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf8 -*-
 # Created L/19/10/2020
-# Updated D/06/09/2026
+# Updated J/08/10/2026
 #
 # Copyright 2020-2027 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
 # https://github.com/luigifab/python-radexreader
@@ -21,31 +21,23 @@ try:
 except ImportError:
 	from distutils.core import setup
 
+long_description = ''
 try:
 	with open('README.md', 'r') as fh:
 		long_description = fh.read().replace('(images/', '(https://raw.githubusercontent.com/luigifab/python-radexreader/master/images/')
-	setup(
-		name='radexreader',
-		version='1.4.0',
-		description='Python library for the RADEX RD1212 and the RADEX ONE Geiger counters.',
-		long_description=long_description,
-		long_description_content_type='text/markdown',
-		license='GPL 2',
-		author='Fabrice Creuzot',
-		author_email='code@luigifab.fr',
-		url='https://github.com/luigifab/python-radexreader',
-		packages=['radexreader'],
-		install_requires=['pyusb', 'pyserial']
-	)
-except:
-	setup(
-		name='radexreader',
-		version='1.4.0',
-		description='Python library for the RADEX RD1212 and the RADEX ONE Geiger counters.',
-		license='GPL 2',
-		author='Fabrice Creuzot',
-		author_email='code@luigifab.fr',
-		url='https://github.com/luigifab/python-radexreader',
-		packages=['radexreader'],
-		install_requires=['pyusb', 'pyserial']
-	)
+except OSError:
+	pass
+
+setup(
+	name='radexreader',
+	version='1.4.0',
+	description='Python library for the RADEX RD1212 and the RADEX ONE Geiger counters.',
+	long_description=long_description,
+	long_description_content_type='text/markdown',
+	license='GPL 2',
+	author='Fabrice Creuzot',
+	author_email='code@luigifab.fr',
+	url='https://github.com/luigifab/python-radexreader',
+	packages=['radexreader'],
+	install_requires=['pyusb', 'pyserial']
+)

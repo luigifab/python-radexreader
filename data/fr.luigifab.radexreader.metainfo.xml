@@ -13,7 +13,9 @@
 	</description>
 	<content_rating type="oars-1.1" />
 	<url type="homepage">https://github.com/luigifab/python-radexreader</url>
+	<launchable type="desktop-id">radexreader.desktop</launchable>
 	<provides>
+		<binary>radexreader</binary>
 		<!-- RD1212v2 -->
 		<modalias>usb:v03EBp5603d*</modalias>
 		<!-- RD1212v1 -->
