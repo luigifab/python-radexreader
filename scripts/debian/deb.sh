@@ -20,7 +20,7 @@ else
 	temp=python-radexreader-$version
 	mkdir /tmp/$temp
 	cp -r ../../* /tmp/$temp/
-	rm -rf /tmp/$temp/scripts/*/builder/ /tmp/$temp/src/radexreader/__pycache__/
+	rm -rf /tmp/$temp/scripts/*/builder/ /tmp/$temp/src/__pycache__/ /tmp/$temp/src/radexreader/__pycache__/
 
 	mv /tmp/$temp builder/
 	cp /usr/share/common-licenses/GPL*2 builder/$temp/LICENSE

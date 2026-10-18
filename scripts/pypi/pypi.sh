@@ -18,6 +18,7 @@ sed -i 's/Usage: radexreader /Usage: radexreader-cli.py /g' builder/radexreader-
 
 # create package (https://packaging.python.org/tutorials/packaging-projects/)
 cd builder/radexreader-${version}/
+rm -rf __pycache__/ radexreader/__pycache__/
 python3 -m pip install --user --upgrade setuptools wheel --no-warn-script-location
 python3 setup.py sdist bdist_wheel
 cd ../..
