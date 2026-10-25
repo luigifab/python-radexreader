@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf8 -*-
 # Created L/19/10/2020
-# Updated J/08/10/2026
+# Updated S/24/10/2026
 #
 # Copyright 2020-2027 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
 # https://github.com/luigifab/python-radexreader
@@ -53,13 +53,13 @@ def read_tail(reader):
 					str('{:.2f}'.format(measure['min'])),
 					str('{:.2f}'.format(measure['val'])),
 					str('{:.2f}'.format(measure['max']))
-				))
+				), flush=True)
 				if reader.com == 'ONEv1':
 					print('                     %s µSv accumulated / %s CPM  [±%s%%]' % (
 						str('{:.2f}'.format(measure['acc'])).rjust(6, ' '),
 						str('{:.0f}'.format(measure['cpm'])).rjust(6, ' '),
 						str(int(measure['pct']))
-					))
+					), flush=True)
 			prev = timestamp
 		time.sleep(10)
 
@@ -69,7 +69,7 @@ def read_jsontail(reader):
 		measures = reader.read(True)
 		for timestamp, measure in measures.items():
 			if timestamp != prev:
-				print(json.dumps({timestamp: measure}))
+				print(json.dumps({timestamp: measure}), flush=True)
 			prev = timestamp
 		time.sleep(10)
 

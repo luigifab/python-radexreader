@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf8 -*-
 # Created L/19/10/2020
-# Updated J/08/10/2026
+# Updated S/24/10/2026
 #
 # Copyright 2020-2027 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
 # https://github.com/luigifab/python-radexreader
@@ -34,7 +34,7 @@ setup(
 	description='Python library for the RADEX RD1212 and the RADEX ONE Geiger counters.',
 	long_description=long_description,
 	long_description_content_type='text/markdown',
-	license='GPL 2',
+	license='GPL-2.0-or-later',
 	author='Fabrice Creuzot',
 	author_email='code@luigifab.fr',
 	url='https://github.com/luigifab/python-radexreader',

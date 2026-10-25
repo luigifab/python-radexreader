@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<component>
+<component type="desktop-application">
 	<id>fr.luigifab.radexreader</id>
 	<name>python3-radexreader</name>
 	<project_license>GPL-2.0-or-later</project_license>

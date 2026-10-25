@@ -29,6 +29,7 @@ package() {
 
   install -dm 755 "$pkgdir/usr/share/applications/"
   desktop-file-install --dir="$pkgdir/usr/share/applications/" "data/radexreader.desktop"
+  install -Dpm 644 data/fr.luigifab.radexreader.metainfo.xml "$pkgdir/usr/share/metainfo/fr.luigifab.radexreader.metainfo.xml"
 
   install -Dpm 644 data/radexreader.bash "$pkgdir/usr/share/bash-completion/completions/radexreader"
   install -Dpm 644 data/radexreader.1 "$pkgdir/usr/share/man/man1/radexreader.1"
