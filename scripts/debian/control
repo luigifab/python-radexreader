@@ -2,7 +2,7 @@ Source: python-radexreader
 Section: python
 Priority: optional
 Maintainer: Fabrice Creuzot <code@luigifab.fr>
-Build-Depends: debhelper-compat (= 14), bash-completion, python3-all, dh-python, dh-exec
+Build-Depends: debhelper-compat (= 14), bash-completion, librsvg2-bin, python3-all, dh-python, dh-exec
 Rules-Requires-Root: no
 Standards-Version: 4.7.4
 Homepage: https://github.com/luigifab/python-radexreader

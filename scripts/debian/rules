@@ -5,7 +5,13 @@
 
 execute_before_dh_install:
 	sed -i 's/radexreader-local /python3-radexreader-deb /g' src/radexreader-cli.py
+	install -Dpm 644 data/radexreader.svg debian/icons/hicolor/scalable/apps/radexreader.svg
+	for size in 16 22 24 32 48 64 128; do \
+		install -dm 755 debian/icons/hicolor/$${size}x$${size}/apps; \
+		rsvg-convert -w $$size -h $$size data/radexreader.svg -o debian/icons/hicolor/$${size}x$${size}/apps/radexreader.png; \
+	done
 
 override_dh_clean:
 	sed -i 's/python3-radexreader-deb /radexreader-local /g' src/radexreader-cli.py
+	rm -rf debian/icons
 	dh_clean

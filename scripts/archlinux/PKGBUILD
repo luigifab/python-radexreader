@@ -3,10 +3,10 @@ pkgver=1.4.0
 pkgrel=1
 pkgdesc='Reader for the RADEX RD1212 and ONE Geiger counters'
 url='https://github.com/luigifab/python-radexreader'
-license=('GPL2')
+license=('GPL2' 'MIT')
 arch=('any')
-depends=('python-pyusb' 'python-pyserial')
-makedepends=('desktop-file-utils' 'python-build' 'python-installer' 'python-setuptools' 'python-wheel')
+depends=('python-pyusb' 'python-pyserial' 'hicolor-icon-theme')
+makedepends=('librsvg' 'desktop-file-utils' 'python-build' 'python-installer' 'python-setuptools' 'python-wheel')
 source=("https://github.com/luigifab/python-radexreader/archive/v${pkgver}/python-radexreader-${pkgver}.tar.gz")
 sha256sums=('SKIP')
 
@@ -30,6 +30,11 @@ package() {
   install -dm 755 "$pkgdir/usr/share/applications/"
   desktop-file-install --dir="$pkgdir/usr/share/applications/" "data/radexreader.desktop"
   install -Dpm 644 data/fr.luigifab.radexreader.metainfo.xml "$pkgdir/usr/share/metainfo/fr.luigifab.radexreader.metainfo.xml"
+  install -Dpm 644 data/radexreader.svg "$pkgdir/usr/share/icons/hicolor/scalable/apps/radexreader.svg"
+  for size in 16 22 24 32 48 64 128; do
+    install -dm 755 "$pkgdir/usr/share/icons/hicolor/${size}x${size}/apps"
+    rsvg-convert -w $size -h $size data/radexreader.svg -o "$pkgdir/usr/share/icons/hicolor/${size}x${size}/apps/radexreader.png"
+  done
 
   install -Dpm 644 data/radexreader.bash "$pkgdir/usr/share/bash-completion/completions/radexreader"
   install -Dpm 644 data/radexreader.1 "$pkgdir/usr/share/man/man1/radexreader.1"

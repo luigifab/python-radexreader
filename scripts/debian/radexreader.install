@@ -1,3 +1,5 @@
 #!/usr/bin/dh-exec
 src/radexreader-cli.py   => usr/bin/radexreader
 data/radexreader.desktop => usr/share/applications/radexreader.desktop
+data/fr.luigifab.radexreader.metainfo.xml => usr/share/metainfo/fr.luigifab.radexreader.metainfo.xml
+debian/icons usr/share

@@ -22,7 +22,7 @@ Version:       1.4.0
 Release:       %mkrel 1
 Summary:       %{common_summary_en}
 Summary(fr):   %{common_summary_fr}
-License:       GPLv2+
+License:       GPLv2+ and MIT
 Group:         Development/Python
 URL:           https://github.com/luigifab/python-radexreader
 Source0:       %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
@@ -30,6 +30,7 @@ Source0:       %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 BuildArch:     noarch
 BuildRequires: aspell-fr
 BuildRequires: desktop-file-utils
+BuildRequires: librsvg
 
 %description %{common_description_en}
 %description -l fr %{common_description_fr}
@@ -42,6 +43,7 @@ Summary(fr):   %{common_summary_fr}
 
 BuildRequires: python3-devel
 BuildRequires: python3dist(setuptools)
+Requires:      hicolor-icon-theme
 Requires:      python3dist(pyserial)
 Requires:      python3dist(pyusb)
 
@@ -62,6 +64,11 @@ cd src
 install -dm 755 %{buildroot}%{_datadir}/applications/
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications/ data/radexreader.desktop
 install -Dpm 644 data/fr.luigifab.radexreader.metainfo.xml %{buildroot}%{_datadir}/metainfo/fr.luigifab.radexreader.metainfo.xml
+install -Dpm 644 data/radexreader.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/radexreader.svg
+for size in 16 22 24 32 48 64 128; do
+	install -dm 755 %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps
+	rsvg-convert -w $size -h $size data/radexreader.svg -o %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps/radexreader.png
+done
 cd src
 %py3_install
 install -Dpm 755 radexreader-cli.py %{buildroot}%{_bindir}/radexreader
@@ -77,6 +84,8 @@ install -Dpm 644 ../scripts/debian/python3-radexreader.udev %{buildroot}/lib/ude
 %{python3_sitelib}/radexreader/
 %{_bindir}/radexreader
 %{_datadir}/applications/radexreader.desktop
+%{_datadir}/icons/hicolor/*/apps/radexreader.png
+%{_datadir}/icons/hicolor/scalable/apps/radexreader.svg
 %{_datadir}/metainfo/fr.luigifab.radexreader.metainfo.xml
 %{_datadir}/bash-completion/completions/radexreader
 %{_mandir}/man1/radexreader.1*

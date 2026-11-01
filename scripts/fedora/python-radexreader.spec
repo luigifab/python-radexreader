@@ -22,7 +22,7 @@ Version:       1.4.0
 Release:       1%{?dist}
 Summary:       %{common_summary_en}
 Summary(fr):   %{common_summary_fr}
-License:       GPL-2.0-or-later
+License:       GPL-2.0-or-later AND MIT
 URL:           https://github.com/luigifab/python-radexreader
 Source0:       %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 
@@ -30,6 +30,7 @@ Source0:       %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 BuildArch:     noarch
 BuildRequires: aspell-fr
 BuildRequires: desktop-file-utils
+BuildRequires: librsvg2-tools
 
 %description %{common_description_en}
 %description -l fr %{common_description_fr}
@@ -41,6 +42,7 @@ Summary:       %{common_summary_en}
 Summary(fr):   %{common_summary_fr}
 
 BuildRequires: python3-devel
+Requires:      hicolor-icon-theme
 Requires:      python3
 Requires:      %{py3_dist pyserial}
 Requires:      %{py3_dist pyusb}
@@ -66,6 +68,11 @@ cd src
 install -dm 755 %{buildroot}%{_datadir}/applications/
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications/ data/radexreader.desktop
 install -Dpm 644 data/fr.luigifab.radexreader.metainfo.xml %{buildroot}%{_metainfodir}/fr.luigifab.radexreader.metainfo.xml
+install -Dpm 644 data/radexreader.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/radexreader.svg
+for size in 16 22 24 32 48 64 128; do
+	install -dm 755 %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps
+	rsvg-convert -w $size -h $size data/radexreader.svg -o %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps/radexreader.png
+done
 cd src
 %pyproject_install
 install -Dpm 755 radexreader-cli.py %{buildroot}%{_bindir}/radexreader
@@ -81,6 +88,8 @@ install -Dpm 644 ../scripts/debian/python3-radexreader.udev %{buildroot}%{_udevr
 %{python3_sitelib}/radexreader/
 %{_bindir}/radexreader
 %{_datadir}/applications/radexreader.desktop
+%{_datadir}/icons/hicolor/*/apps/radexreader.png
+%{_datadir}/icons/hicolor/scalable/apps/radexreader.svg
 %{bash_completions_dir}/radexreader
 %{_mandir}/man1/radexreader.1*
 %{_mandir}/*/man1/radexreader.1*

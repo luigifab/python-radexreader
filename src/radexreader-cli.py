@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf8 -*-
 # Created L/19/10/2020
-# Updated S/24/10/2026
+# Updated D/01/11/2026
 #
 # Copyright 2020-2027 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
 # https://github.com/luigifab/python-radexreader
@@ -28,11 +28,11 @@ try:
 except AttributeError:
 	datetime.UTC = datetime.timezone.utc
 
-# https://stackoverflow.com/a/62804772/2980105
+# @see https://stackoverflow.com/a/62804772/2980105
 # prevent auto import for "import radexreader" when filename is "radexreader.py"
 if "radexreader.py" in sys.argv[0]:
 	sys.path = sys.path[1:]
-# python3 .../src/radexreader*py use local version when radexreader is not installed from package
+# use local version when radexreader is not installed from package with "python3 .../src/radexreader*py"
 elif ".py" in sys.argv[0]:
 	import os
 	sys.path.insert(0, os.path.dirname(os.path.realpath(sys.argv[0])))
@@ -129,58 +129,51 @@ def write_erase(reader):
 if len(sys.argv) > 1:
 
 	msg = '\n radexreader-local ' + radexreader.__version__ + ' − python ' + python_version() + ', pyusb ' + usb.__version__ + ', pyserial ' + serial.__version__
-
-	if sys.argv[1] == 'tail':
-		print(msg)
-		try:
+	try:
+		if sys.argv[1] == 'tail':
+			print(msg)
 			reader = radexreader.RadexReader()
 			read_tail(reader)
-		except KeyboardInterrupt:
-			print("")
-		sys.exit(0)
+			sys.exit(0)
 
-	if sys.argv[1] == 'jsontail' or sys.argv[1] == 'tailjson':
-		import json
-		try:
+		elif sys.argv[1] == 'jsontail' or sys.argv[1] == 'tailjson':
+			import json
 			reader = radexreader.RadexReader()
 			read_jsontail(reader)
-		except KeyboardInterrupt:
-			print("")
-		sys.exit(0)
+			sys.exit(0)
 
-	if sys.argv[1] == 'last' or sys.argv[1] == 'readlast':
-		print(msg)
-		reader = radexreader.RadexReader()
-		read_last(reader)
-		sys.exit(0)
+		elif sys.argv[1] == 'last' or sys.argv[1] == 'readlast':
+			print(msg)
+			reader = radexreader.RadexReader()
+			read_last(reader)
+			sys.exit(0)
 
-	if sys.argv[1] == 'jsonlast':
-		import json
-		reader = radexreader.RadexReader()
-		read_jsonlast(reader)
-		sys.exit(0)
+		elif sys.argv[1] == 'jsonlast':
+			import json
+			reader = radexreader.RadexReader()
+			read_jsonlast(reader)
+			sys.exit(0)
 
-	if sys.argv[1] == 'all' or sys.argv[1] == 'readall':
-		print(msg)
-		reader = radexreader.RadexReader()
-		read_all(reader)
-		sys.exit(0)
+		elif sys.argv[1] == 'all' or sys.argv[1] == 'readall':
+			print(msg)
+			reader = radexreader.RadexReader()
+			read_all(reader)
+			sys.exit(0)
 
-	if sys.argv[1] == 'jsonall':
-		import json
-		reader = radexreader.RadexReader()
-		read_jsonall(reader)
-		sys.exit(0)
+		elif sys.argv[1] == 'jsonall':
+			import json
+			reader = radexreader.RadexReader()
+			read_jsonall(reader)
+			sys.exit(0)
 
-	if sys.argv[1] == 'erase':
-		print(msg)
-		reader = radexreader.RadexReader()
-		write_erase(reader)
-		sys.exit(0)
+		elif sys.argv[1] == 'erase':
+			print(msg)
+			reader = radexreader.RadexReader()
+			write_erase(reader)
+			sys.exit(0)
 
-	if sys.argv[1] == 'interactive':
-		print(msg)
-		try:
+		elif sys.argv[1] == 'interactive':
+			print(msg)
 			reader = radexreader.RadexReader()
 			while True:
 				try:
@@ -211,14 +204,20 @@ if len(sys.argv) > 1:
 				except (KeyboardInterrupt, EOFError):
 					print("")
 					break
-		except Exception as e:
-			print("\n", e)
+			sys.exit(0)
+
+	except KeyboardInterrupt:
+		print("")
+		sys.exit(0)
+	except Exception as e:
+		print("\n", e)
+		if sys.argv[1] == 'interactive':
 			try:
 				input(" Press enter to quit...")
 			except (KeyboardInterrupt, EOFError):
 				print("")
-
-		sys.exit(0)
+			print(" ")
+		sys.exit(1)
 
 print('Usage: radexreader tail|jsontail|last|jsonlast|all|jsonall|erase|interactive')
 sys.exit(1)

@@ -6,7 +6,7 @@ Version:       1.4.0
 Release:       0
 Summary:       Reader for the RADEX RD1212 and ONE Geiger counters
 Summary(fr):   Lecteur pour les compteurs Geiger RADEX RD1212 et ONE
-License:       GPL-2.0-or-later
+License:       GPL-2.0-or-later AND MIT
 URL:           https://github.com/luigifab/python-radexreader
 Source0:       %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 
@@ -20,6 +20,7 @@ BuildRequires: aspell-fr
 BuildRequires: desktop-file-utils
 BuildRequires: fdupes
 BuildRequires: python-rpm-macros
+BuildRequires: rsvg-convert
 Requires:      %{common} = %{version}
 Requires:      python-pyserial
 Requires:      python-pyusb
@@ -51,6 +52,7 @@ de débrancher l'appareil après l'installation.
 Summary:       Common files for python3*-radexreader
 Summary(fr):   Fichiers communs pour python3*-radexreader
 Requires:      %{provide} = %{version}
+Requires:      hicolor-icon-theme
 
 %description -n %{common}
 Common files for the RadexReader.
@@ -76,6 +78,11 @@ install -dm 755 %{buildroot}%{_datadir}/applications/
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications/ ../data/radexreader.desktop
 install -Dpm 644 ../data/radexreader.bash %{buildroot}%{_datadir}/bash-completion/completions/radexreader
 install -Dpm 644 ../data/fr.luigifab.radexreader.metainfo.xml %{buildroot}%{_datadir}/metainfo/fr.luigifab.radexreader.metainfo.xml
+install -Dpm 644 ../data/radexreader.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/radexreader.svg
+for size in 16 22 24 32 48 64 128; do
+	install -dm 755 %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps
+	rsvg-convert -w $size -h $size ../data/radexreader.svg -o %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps/radexreader.png
+done
 install -Dpm 644 ../data/radexreader.1 %{buildroot}%{_mandir}/man1/radexreader.1
 install -Dpm 644 ../data/radexreader.fr.1 %{buildroot}%{_mandir}/fr/man1/radexreader.1
 install -Dpm 644 ../scripts/debian/python3-radexreader.udev %{buildroot}%{_udevrulesdir}/60-%{name}.rules
@@ -90,6 +97,8 @@ install -Dpm 644 ../scripts/debian/python3-radexreader.udev %{buildroot}%{_udevr
 
 %files -n %{common}
 %{_datadir}/applications/radexreader.desktop
+%{_datadir}/icons/hicolor/*/apps/radexreader.png
+%{_datadir}/icons/hicolor/scalable/apps/radexreader.svg
 %{_datadir}/metainfo/fr.luigifab.radexreader.metainfo.xml
 %{_datadir}/bash-completion/completions/radexreader
 %{_mandir}/man1/radexreader.1%{?ext_man}
