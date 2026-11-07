@@ -28,7 +28,6 @@ Source0:       %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 
 
 BuildArch:     noarch
-BuildRequires: aspell-fr
 BuildRequires: desktop-file-utils
 BuildRequires: librsvg2-tools
 
@@ -70,8 +69,8 @@ desktop-file-install --dir=%{buildroot}%{_datadir}/applications/ data/radexreade
 install -Dpm 644 data/fr.luigifab.radexreader.metainfo.xml %{buildroot}%{_metainfodir}/fr.luigifab.radexreader.metainfo.xml
 install -Dpm 644 data/radexreader.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/radexreader.svg
 for size in 16 22 24 32 48 64 128; do
-	install -dm 755 %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps
-	rsvg-convert -w $size -h $size data/radexreader.svg -o %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps/radexreader.png
+  install -dm 755 %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps
+  rsvg-convert -w $size -h $size data/radexreader.svg -o %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps/radexreader.png
 done
 cd src
 %pyproject_install
@@ -101,6 +100,9 @@ install -Dpm 644 ../scripts/debian/python3-radexreader.udev %{buildroot}%{_udevr
 * Fri Jan 01 2027 Fabrice Creuzot <code@luigifab.fr> - 1.4.0-1
 - New upstream release
 
+* Mon Nov 02 2026 Fabrice Creuzot <code@luigifab.fr> - 1.3.0-7
+- Remove aspell-fr (Closes: rhbz#2564626)
+
 * Fri Aug 08 2025 Fabrice Creuzot <code@luigifab.fr> - 1.3.0-1
 - New upstream release
 
@@ -124,6 +126,3 @@ install -Dpm 644 ../scripts/debian/python3-radexreader.udev %{buildroot}%{_udevr
 
 * Wed May 05 2021 Fabrice Creuzot <code@luigifab.fr> - 1.2.0-1
 - Initial Fedora package release (Closes: rhbz#1896742)
-
-
-

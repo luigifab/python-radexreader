@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf8 -*-
 # Created L/19/10/2020
-# Updated D/06/09/2026
+# Updated S/07/11/2026
 #
 # Copyright 2020-2027 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
 # https://github.com/luigifab/python-radexreader
@@ -34,21 +34,15 @@ class RadexReader():
 	com = None
 	usb = None
 	serial = None
-	keyA = None
-	keyB = None
-	keyC = None
-	keyD = None
+	key = None
 
 	def disconnect(self):
-		# is it working?
-		usb.util.dispose_resources(self.usb)
+		if self.usb is not None:
+			usb.util.dispose_resources(self.usb)
 		self.com = None
 		self.usb = None
 		self.serial = None
-		self.keyA = None
-		self.keyB = None
-		self.keyC = None
-		self.keyD = None
+		self.key = None
 
 	def __init__(self):
 
@@ -90,7 +84,7 @@ class RadexReader():
 			self.com = 'RD1212v2'
 			# usb reset
 			self.usb.reset()
-			if sys.platform != 'win32' and sys.platform != 'cygwin' and self.usb.is_kernel_driver_active(0):
+			if sys.platform not in ('win32', 'cygwin') and self.usb.is_kernel_driver_active(0):
 				self.usb.detach_kernel_driver(0)
 			self.usb.set_configuration()
 			return # device found
@@ -113,13 +107,12 @@ class RadexReader():
 				hex(self.usb.idVendor)  + ' ' + usb.util.get_string(self.usb, self.usb.iManufacturer) + ', ' +
 				hex(self.usb.idProduct) + ' ' + usb.util.get_string(self.usb, self.usb.iProduct) + ', ' +
 				self.serial.port + ')')
+		elif self.com == 'ONEv1' and sys.platform not in ('win32', 'cygwin'):
+			return ('ONEv1 (' +
+				hex(self.usb.idVendor)  + ' ' + usb.util.get_string(self.usb, self.usb.iManufacturer) + ', ' +
+				hex(self.usb.idProduct) + ' ' + usb.util.get_string(self.usb, self.usb.iProduct) + ')')
 		elif self.com == 'ONEv1':
-			if sys.platform not in ('win32', 'cygwin'):
-				return ('ONEv1 (' +
-					hex(self.usb.idVendor)  + ' ' + usb.util.get_string(self.usb, self.usb.iManufacturer) + ', ' +
-					hex(self.usb.idProduct) + ' ' + usb.util.get_string(self.usb, self.usb.iProduct) + ')')
-			else:
-				return 'ONEv1 (' + self.serial.port + ')'
+			return 'ONEv1 (' + self.serial.port + ')'
 
 	def print_info(self):
 		if self.com == 'RD1212v2':
@@ -132,9 +125,9 @@ class RadexReader():
 			print('[info] Uncertainty of the result: ±(15+6/D)%')
 			print('[info]   D is the value after a complete cycle of 100 seconds')
 			print()
-			print('[warn] The values shown are only approximations.')
-			print('[warn] The actual value can only be measured with suitable professional device.')
-			print('[warn] For now, not tested with measured values greater than 0.25 µSv/h.')
+			print('[warn] The values shown are only approximations. The actual value')
+			print('[warn]  can only be measured with a suitable professional device.')
+			print('[warn] Not tested with measured values greater than 0.25 µSv/h.')
 			print()
 		elif self.com == 'RD1212v1':
 			print(' manufacturer  ' + hex(self.usb.idVendor).ljust(7, ' ')  + ' ' + usb.util.get_string(self.usb, self.usb.iManufacturer))
@@ -147,9 +140,9 @@ class RadexReader():
 			print('[info] Uncertainty of the result: ±(15+6/D)%')
 			print('[info]   D is the value after a complete cycle of 100 seconds')
 			print()
-			print('[warn] The values shown are only approximations.')
-			print('[warn] The actual value can only be measured with suitable professional device.')
-			print('[warn] For now, not tested with measured values greater than 0.25 µSv/h.')
+			print('[warn] The values shown are only approximations. The actual value')
+			print('[warn]  can only be measured with a suitable professional device.')
+			print('[warn] Not tested with measured values greater than 0.25 µSv/h.')
 			print()
 		elif self.com == 'ONEv1':
 			if sys.platform != 'win32' and sys.platform != 'cygwin':
@@ -166,9 +159,9 @@ class RadexReader():
 			print('[info] Uncertainty of the result: ±(15+6/D)%')
 			print('[info]   D is the value after a complete cycle of 100? seconds')
 			print()
-			print('[warn] The values shown are only approximations.')
-			print('[warn] The actual value can only be measured with suitable professional device.')
-			print('[warn] For now, not tested with measured values greater than 0.25 µSv/h.')
+			print('[warn] The values shown are only approximations. The actual value')
+			print('[warn]  can only be measured with a suitable professional device.')
+			print('[warn] Not tested with measured values greater than 0.25 µSv/h.')
 			print()
 
 	def hid_set_report(self, report):
@@ -181,9 +174,7 @@ class RadexReader():
 				0,     # USB interface #0
 				report # the HID payload as a byte array
 			)
-		elif self.com == 'RD1212v1':
-			self.serial.write(report)
-		elif self.com == 'ONEv1':
+		elif self.com in ('RD1212v1', 'ONEv1'):
 			self.serial.write(report)
 
 	def hid_get_report(self):
@@ -209,8 +200,6 @@ class RadexReader():
 		# from 0x0 to 0xb3
 		if last and self.com == 'RD1212v2':
 			keys = [0x0]
-		elif last and self.com == 'RD1212v1':
-			keys = list(reversed(range(0x0, 0xb4)))
 		else:
 			keys = list(range(0x0, 0xb4))
 
@@ -221,14 +210,15 @@ class RadexReader():
 		for key in keys:
 			self.hid_set_report((0x12, 0x12, 0x01, 0x02, key, 0, 0, 0, 0, 0, 0, 0, 0x3c, 0x84))
 			hexa = self.hid_get_report()
-			if hexa != b'' and len(hexa) >= 9 and hexa[0] != 0:
+			if len(hexa) >= 9 and hexa[0] != 0:
 				# timestamp = 01/01/2016 00:00:44 = 1451606444
 				# timestamp = 01/01/2016 00:00:44 = 172 + 193 (×256) + 133 (×256×256) + 86 (×256×256×256)
-				timestamp   = (hexa[2] + hexa[3] * 256 + hexa[4] * 256 * 256 + hexa[5] * 256 * 256 * 256)
+				#             (hexa[2] + hexa[3] * 256 + hexa[4] * 256 * 256 + hexa[5] * 256 * 256 * 256)
+				timestamp   = int.from_bytes(hexa[2:6], 'little')
 				# measure   = 0.15 µSv/h = 15
 				measure     = (hexa[6] + hexa[7] * 256) / 100
 				# unlikely result
-				if measure == 0:
+				if measure == 0 or hexa[8] not in interval:
 					continue
 				# uncertainty of the result
 				percent     = 15 + 6 / measure
@@ -236,8 +226,6 @@ class RadexReader():
 				measure_max = measure * (1 + percent / 100)
 				if measure_min < 0:
 					measure_min = 0
-				if percent > 99.9:
-					percent = 99.9
 				# memorize
 				values[timestamp] = {
 					'pct': percent,
@@ -247,45 +235,38 @@ class RadexReader():
 					'time': timestamp,
 					'interval': interval[hexa[8]]
 				}
+			elif len(hexa) < 9:
+				print('read error: ' + str(len(hexa)) + ' bytes for key ' + hex(key), file=sys.stderr)
 
+		# no measurements
 		if len(values) < 1:
 			return {}
 
-		# most recent measure
+		# only most recent measurement
 		if last:
 			maxi = max(values)
-			return dict({ maxi: values[maxi] })
+			return { maxi: values[maxi] }
 
-		# sort measures by date
+		# all measurements sorted by date
 		return dict(sorted(values.items(), key=operator.itemgetter(0)))
 
 	def readOne(self):
 
-		if self.keyA is None:
-			self.keyA = 0x04 - 0x04  # => 0x00
-			self.keyB = 0x00
-			self.keyC = 0x5a + 0x04  # => 0x5e
-			self.keyD = 0x00
+		# packet number: +4 each time
+		self.key = ((self.key or 0) + 4) & 0xffff
+		# header checksum: one's complement of the sum of the 16-bit words
+		total = 0xff7b + 0x0020 + 0x0006 + self.key
+		total = (total & 0xffff) + (total >> 16)
+		check = 0xffff - total
 
-		self.keyA += 0x04
-		self.keyC -= 0x04
-
-		# @todo it's wrong
-		if self.keyA > 0xff:
-			self.keyA -= 0xfe
-			self.keyB += 0x01
-			if self.keyB > 0xff:
-				self.keyB = 0x00
-			self.keyC -= 0x01
-		elif self.keyC < 0x00:
-			self.keyC += 0xff
-			self.keyD -= 0x01
-			if self.keyD < 0x00:
-				self.keyD = 0xff
-
-		self.hid_set_report((0x7b, 0xff, 0x20, 0, 0x06, 0, self.keyA, self.keyB, 0, 0, self.keyC, self.keyD, 0, 0x08, 0x0c, 0, 0xf3, 0xf7))
+		self.hid_set_report((0x7b, 0xff, 0x20, 0, 0x06, 0, self.key & 0xff, self.key >> 8, 0, 0, check & 0xff, check >> 8, 0,
+			0x08, 0x0c, 0, 0xf3, 0xf7))
 		hexa = self.hid_get_report()
-		#if hexa and len(hexa) >= 31:
+
+		if len(hexa) < 31:
+			print('read error: ' + str(len(hexa)) + ' bytes for key ' + hex(self.key), file=sys.stderr)
+			return {}
+
 		# measure   = 0.15 µSv/h = 15 / 0.15 µSv accumulated = 15 / 15 CPM = 15
 		measure     = (hexa[20] + hexa[21] * 256 + hexa[22] * 256 * 256) / 100
 		measure_acc = (hexa[24] + hexa[25] * 256 + hexa[26] * 256 * 256) / 100
@@ -293,15 +274,15 @@ class RadexReader():
 		# unlikely result
 		if measure == 0:
 			return {}
+
 		# uncertainty of the result
 		percent     = 15 + 6 / measure
 		measure_min = measure * (1 - percent / 100)
 		measure_max = measure * (1 + percent / 100)
 		if measure_min < 0:
 			measure_min = 0
-		if percent > 99.9:
-			percent = 99.9
-		# most recent measure
+
+		# only most recent measurement
 		timestamp = int(time.time())
 		return { timestamp: {
 			'pct':  percent,
@@ -313,11 +294,7 @@ class RadexReader():
 			'time': timestamp
 		} }
 
-		#return {}
-
 	def erase(self):
-		if self.com == 'RD1212v2':
-			self.hid_set_report((0x12, 0x12, 0x01, 0x03, 0, 0, 0, 0, 0, 0, 0, 0, 0x3c, 0x84))
-		elif self.com == 'RD1212v1':
+		if self.com in ('RD1212v2', 'RD1212v1'):
 			self.hid_set_report((0x12, 0x12, 0x01, 0x03, 0, 0, 0, 0, 0, 0, 0, 0, 0x3c, 0x84))
 

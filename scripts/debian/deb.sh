@@ -23,7 +23,9 @@ else
 	rm -rf /tmp/$temp/scripts/*/builder/ /tmp/$temp/src/__pycache__/ /tmp/$temp/src/radexreader/__pycache__/
 
 	mv /tmp/$temp builder/
-	cp /usr/share/common-licenses/GPL*2 builder/$temp/LICENSE
+	if [ ! -f builder/$temp/LICENSE ]; then
+		cp /usr/share/common-licenses/GPL*2 builder/$temp/LICENSE
+	fi
 
 	cd builder/
 	tar czf $temp.tar.gz $temp

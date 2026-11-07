@@ -2,7 +2,7 @@
 
 # RadexReader
 
-The RadexReader is a user-space driver for the [RADEX RD1212 v1/v2](https://quartarad.com/product-category/radiation-detector/) and the [RADEX ONE](https://quartarad.com/product-category/radiation-detector/) Geiger counters. It allows you to read and clear stored data via USB. Warning! This tool is completely unrelated with QuartaRad.
+The RadexReader is a user-space driver for the [RADEX RD1212 v1/v2](https://quartarad.com/product-category/radiation-detector/) and the [RADEX ONE](https://quartarad.com/product-category/radiation-detector/) Geiger counters. It allows you to read and clear stored data via USB. Warning! This tool is not affiliated with QuartaRad.
 
 This tool was initially developed with RD1212 v2.48.
 
@@ -89,7 +89,7 @@ pub   rsa4096 2020-10-31 [SC]
 
 ## Copyright
 
-- Current version: 1.4.0~nightly20261101
+- Current version: 1.4.0~nightly20261107
 - Compatibility: Python 3.3 / 3.4 / 3.5 / 3.6 / 3.7 / 3.8 / 3.9 / 3.10 / 3.11 / 3.12 / 3.13 / 3.14
 - Links: [luigifab.fr](https://www.luigifab.fr/python/radexreader) - [github.com](https://github.com/luigifab/python-radexreader) - [pypi.org](https://pypi.org/project/radexreader/) - [ppa/dpa](https://launchpad.net/~luigifab/+archive/ubuntu/packages)
 

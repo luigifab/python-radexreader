@@ -18,6 +18,7 @@ BuildRequires: %{python_module setuptools}
 BuildRequires: %{python_module wheel}
 BuildRequires: aspell-fr
 BuildRequires: desktop-file-utils
+BuildRequires: hicolor-icon-theme
 BuildRequires: fdupes
 BuildRequires: python-rpm-macros
 BuildRequires: rsvg-convert
@@ -51,8 +52,8 @@ de débrancher l'appareil après l'installation.
 %package -n %{common}
 Summary:       Common files for python3*-radexreader
 Summary(fr):   Fichiers communs pour python3*-radexreader
-Requires:      %{provide} = %{version}
 Requires:      hicolor-icon-theme
+Requires:      %{provide} = %{version}
 
 %description -n %{common}
 Common files for the RadexReader.
@@ -80,8 +81,8 @@ install -Dpm 644 ../data/radexreader.bash %{buildroot}%{_datadir}/bash-completio
 install -Dpm 644 ../data/fr.luigifab.radexreader.metainfo.xml %{buildroot}%{_datadir}/metainfo/fr.luigifab.radexreader.metainfo.xml
 install -Dpm 644 ../data/radexreader.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/radexreader.svg
 for size in 16 22 24 32 48 64 128; do
-	install -dm 755 %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps
-	rsvg-convert -w $size -h $size ../data/radexreader.svg -o %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps/radexreader.png
+  install -dm 755 %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps
+  rsvg-convert -w $size -h $size ../data/radexreader.svg -o %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps/radexreader.png
 done
 install -Dpm 644 ../data/radexreader.1 %{buildroot}%{_mandir}/man1/radexreader.1
 install -Dpm 644 ../data/radexreader.fr.1 %{buildroot}%{_mandir}/fr/man1/radexreader.1
